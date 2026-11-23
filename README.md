@@ -166,18 +166,7 @@ git clone https://github.com/iamv1n/cswapbar.git && cd cswapbar
 
 ## About the author
 
-<table>
-  <tr>
-    <td>
-      <a href="https://github.com/iamv1n"><img src="https://github.com/iamv1n.png" width="88" alt="Vineet Anil Likhitkar"></a>
-    </td>
-    <td>
-      <b>Vineet Anil Likhitkar</b><br>
-      Designed and built CSwapBar.<br>
-      Find more of my work on GitHub: <a href="https://github.com/iamv1n">@iamv1n</a>
-    </td>
-  </tr>
-</table>
+**Vineet Likhitkar** · [@iamv1n](https://github.com/iamv1n)
 
 ## Credits
 
