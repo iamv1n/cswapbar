@@ -18,7 +18,7 @@ You need:
 
 ## Option A: DMG from GitHub Releases (recommended)
 
-1. Download `CSwapBar-<version>.dmg` from the [latest release](https://github.com/iamv1n/CSwapBar/releases/latest).
+1. Download `CSwapBar-<version>.dmg` from the [latest release](https://github.com/iamv1n/cswapbar/releases/latest).
 2. **Optional: verify the download.** Compare the checksum with the `.sha256` file from the same release:
 
    ```bash
@@ -64,7 +64,7 @@ This message usually means the quarantine flag is set on an app that isn't notar
 This clones the repository to `~/.cswapbar/src`, builds the app, and installs it to `/Applications`. It needs the Command Line Tools (`xcode-select --install`). Read the [script](../scripts/get.sh) first if you like:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/iamv1n/CSwapBar/main/scripts/get.sh | bash
+curl -fsSL https://raw.githubusercontent.com/iamv1n/cswapbar/main/scripts/get.sh | bash
 ```
 
 Run the same command again to update.
@@ -72,8 +72,8 @@ Run the same command again to update.
 ## Option C: build from source
 
 ```bash
-git clone https://github.com/iamv1n/CSwapBar.git
-cd CSwapBar
+git clone https://github.com/iamv1n/cswapbar.git
+cd cswapbar
 ./scripts/install.sh
 ```
 

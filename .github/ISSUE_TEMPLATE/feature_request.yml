@@ -4,7 +4,7 @@ labels: [enhancement]
 body:
   - type: markdown
     attributes:
-      value: Check the [roadmap](https://github.com/iamv1n/CSwapBar/blob/main/ROADMAP.md) first; it might already be planned.
+      value: Check the [roadmap](https://github.com/iamv1n/cswapbar/blob/main/ROADMAP.md) first; it might already be planned.
   - type: textarea
     id: problem
     attributes:

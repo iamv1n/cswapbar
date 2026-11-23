@@ -15,12 +15,12 @@
   <img alt="SwiftUI" src="https://img.shields.io/badge/UI-SwiftUI-0A84FF">
   <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-34C759">
   <img alt="Unofficial" src="https://img.shields.io/badge/status-unofficial-8E8E93">
-  <a href="https://github.com/iamv1n/CSwapBar/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/iamv1n/CSwapBar?color=D77D60&label=release"></a>
+  <a href="https://github.com/iamv1n/cswapbar/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/iamv1n/cswapbar?color=D77D60&label=release"></a>
 </p>
 
 <p align="center">
-  <a href="https://iamv1n.github.io/CSwapBar/"><b>Website</b></a> ·
-  <a href="https://github.com/iamv1n/CSwapBar/releases/latest"><b>Download</b></a> ·
+  <a href="https://iamv1n.github.io/cswapbar/"><b>Website</b></a> ·
+  <a href="https://github.com/iamv1n/cswapbar/releases/latest"><b>Download</b></a> ·
   <a href="docs/INSTALL.md">Install guide</a> ·
   <a href="ROADMAP.md">Roadmap</a> ·
   <a href="CHANGELOG.md">Changelog</a> ·
@@ -108,7 +108,7 @@ These are built into the app, not WidgetKit, so they need no Xcode extension or 
 
 ### Download the DMG (recommended)
 
-1. Download **CSwapBar-&lt;version&gt;.dmg** from the [latest release](https://github.com/iamv1n/CSwapBar/releases/latest).
+1. Download **CSwapBar-&lt;version&gt;.dmg** from the [latest release](https://github.com/iamv1n/cswapbar/releases/latest).
 2. Open it and drag **CSwapBar** onto **Applications**.
 3. Allow the first launch. CSwapBar is open source but **not notarized** by Apple, so macOS blocks it once:
    - **macOS 15 Sequoia or later:** try to open it and click **Done**. Then go to **System Settings → Privacy & Security** and click **Open Anyway**.
@@ -122,14 +122,14 @@ The [install guide](docs/INSTALL.md) has step-by-step details, a fix for the "da
 Builds locally, so there's no Gatekeeper prompt. Needs the Command Line Tools (`xcode-select --install`):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/iamv1n/CSwapBar/main/scripts/get.sh | bash
+curl -fsSL https://raw.githubusercontent.com/iamv1n/cswapbar/main/scripts/get.sh | bash
 ```
 
 ### Build from source
 
 ```bash
-git clone https://github.com/iamv1n/CSwapBar.git
-cd CSwapBar
+git clone https://github.com/iamv1n/cswapbar.git
+cd cswapbar
 ./scripts/install.sh
 ```
 
@@ -158,7 +158,7 @@ Using multiple Claude accounts is your responsibility under Anthropic's terms.
 ## Development
 
 ```bash
-git clone https://github.com/iamv1n/CSwapBar.git && cd CSwapBar
+git clone https://github.com/iamv1n/cswapbar.git && cd cswapbar
 ./scripts/setup.sh --run     # checks tools, builds, tests, launches a debug build
 ```
 

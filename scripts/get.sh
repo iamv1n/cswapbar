@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # Install CSwapBar from source in one line:
 #
-#   curl -fsSL https://raw.githubusercontent.com/iamv1n/CSwapBar/main/scripts/get.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/iamv1n/cswapbar/main/scripts/get.sh | bash
 #
 # Clones (or updates) the repository into ~/.cswapbar/src, builds the app, and
 # installs it to /Applications. Read this script before piping it to bash.
 #
 # Environment overrides:
-#   CSWAPBAR_REPO   git URL      (default: https://github.com/iamv1n/CSwapBar.git)
+#   CSWAPBAR_REPO   git URL      (default: https://github.com/iamv1n/cswapbar.git)
 #   CSWAPBAR_REF    branch/tag   (default: main)
 #   CSWAPBAR_DIR    checkout dir (default: ~/.cswapbar/src)
 #   INSTALL_DIR     where the .app goes (default: /Applications)
 set -euo pipefail
 
-REPO="${CSWAPBAR_REPO:-https://github.com/iamv1n/CSwapBar.git}"
+REPO="${CSWAPBAR_REPO:-https://github.com/iamv1n/cswapbar.git}"
 REF="${CSWAPBAR_REF:-main}"
 DIR="${CSWAPBAR_DIR:-$HOME/.cswapbar/src}"
 

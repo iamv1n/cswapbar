@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/realiti4/claude-swap/issues
     about: Problems with switching, logins, or `cswap` itself belong in the CSwap project.
   - name: Security vulnerability
-    url: https://github.com/iamv1n/CSwapBar/blob/main/SECURITY.md
+    url: https://github.com/iamv1n/cswapbar/blob/main/SECURITY.md
     about: Please report security issues privately. See SECURITY.md.

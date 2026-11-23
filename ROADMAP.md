@@ -1,6 +1,6 @@
 # Roadmap
 
-Where CSwapBar is headed. Plans change. Open an [issue](https://github.com/iamv1n/CSwapBar/issues) to suggest something or to pick up an item; items marked **help wanted** are good places to start.
+Where CSwapBar is headed. Plans change. Open an [issue](https://github.com/iamv1n/cswapbar/issues) to suggest something or to pick up an item; items marked **help wanted** are good places to start.
 
 ## ✅ 0.1: Foundation (released)
 

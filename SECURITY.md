@@ -6,7 +6,7 @@ Only the latest release gets security fixes.
 
 ## Reporting a vulnerability
 
-**Please don't open a public issue for security problems.** Use GitHub's private reporting instead: **Security → Report a vulnerability** on the [repository page](https://github.com/iamv1n/CSwapBar/security/advisories/new).
+**Please don't open a public issue for security problems.** Use GitHub's private reporting instead: **Security → Report a vulnerability** on the [repository page](https://github.com/iamv1n/cswapbar/security/advisories/new).
 
 Please include:
 

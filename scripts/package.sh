@@ -54,7 +54,7 @@ Any version (Terminal)
 
 If macOS says the app "is damaged", use the Terminal command above.
 
-Full guide: https://github.com/iamv1n/CSwapBar/blob/main/docs/INSTALL.md
+Full guide: https://github.com/iamv1n/cswapbar/blob/main/docs/INSTALL.md
 CSwapBar needs CSwap installed:  uv tool install claude-swap
 TXT
 

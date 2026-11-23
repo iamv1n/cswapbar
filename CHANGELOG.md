@@ -27,5 +27,5 @@ First public release.
 - **Developer tooling:** `scripts/setup.sh`, `build.sh`, `test.sh`, `install.sh`, `package.sh` (DMG and zip), `release.sh`, `make-icon.sh`, and `get.sh`. Also UI snapshot flags (`--render-popover`, `--render-settings`, `--render-widget`).
 - **Tests:** 74 tests, including WCAG contrast checks for every theme and accent, plus opt-in read-only integration tests against a real CSwap install.
 
-[Unreleased]: https://github.com/iamv1n/CSwapBar/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/iamv1n/CSwapBar/releases/tag/v0.1.0
+[Unreleased]: https://github.com/iamv1n/cswapbar/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/iamv1n/cswapbar/releases/tag/v0.1.0

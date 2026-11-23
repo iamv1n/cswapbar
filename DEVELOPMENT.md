@@ -5,8 +5,8 @@ Everything you need to build, run, test, and release CSwapBar. For ground rules 
 ## Quick start
 
 ```bash
-git clone https://github.com/iamv1n/CSwapBar.git
-cd CSwapBar
+git clone https://github.com/iamv1n/cswapbar.git
+cd cswapbar
 ./scripts/setup.sh --run
 ```
 
@@ -168,7 +168,7 @@ The project site is a static page in [`docs/`](docs/) (`index.html`, `styles.css
 python3 -m http.server 8000 -d docs   # preview at http://localhost:8000
 ```
 
-To publish on GitHub Pages: **Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `/docs`**. It goes live at `https://iamv1n.github.io/CSwapBar/`. `docs/.nojekyll` makes GitHub serve the files as they are.
+To publish on GitHub Pages: **Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `/docs`**. It goes live at `https://iamv1n.github.io/cswapbar/`. `docs/.nojekyll` makes GitHub serve the files as they are.
 
 ## Checks before pushing
 
