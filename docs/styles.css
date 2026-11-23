@@ -80,6 +80,18 @@ kbd {
 }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--text); font: 700 16px var(--font-display); }
 .brand:hover { text-decoration: none; }
+.mac-tag {
+  padding: 3px 8px; border-radius: 999px; white-space: nowrap;
+  font: 600 11px var(--font); letter-spacing: 0.02em; color: var(--text);
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.mac-pill {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 14px;
+  padding: 6px 12px; border-radius: 999px; max-width: 100%;
+  font: 600 13px var(--font); color: var(--text);
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.mac-pill svg { flex: none; color: var(--accent-2); }
 .nav nav { display: flex; gap: 22px; margin-left: auto; }
 .nav nav a { color: var(--muted); font-size: 14px; font-weight: 500; }
 .nav nav a:hover { color: var(--text); text-decoration: none; }
@@ -363,7 +375,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
   .hero-visual .shot-back { left: -10px; }
   .cards { grid-template-columns: 1fr 1fr; }
   :root { --shot-h: 440px; --hero-h: 520px; }
-  .steps { grid-template-columns: 1fr; max-width: 620px; margin: 0 auto; }
+  .steps { grid-template-columns: minmax(0, 1fr); max-width: 620px; margin: 0 auto; }
   .nav nav { display: none; }
   .nav .btn { margin-left: auto; }
   .section { padding-top: 90px; }
@@ -408,6 +420,9 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
 @media (max-width: 380px) {
   .hero h1 { font-size: 34px; }
   .tabs button { font-size: 12px; }
+  .mac-tag { display: none; }
+  .tabs.small { max-width: 100%; }
+  .tabs.small button { padding-left: 9px; padding-right: 9px; }
 }
 
 /* ── Reduced motion ─────────────────────────────────────── */
