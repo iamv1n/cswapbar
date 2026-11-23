@@ -1,0 +1,20 @@
+CSwapBar
+Copyright (c) 2026 Vineet Anil Likhitkar (https://github.com/iamv1n).
+Licensed under the MIT License (see LICENSE).
+
+CSwapBar is an unofficial companion app. It is not affiliated with or endorsed
+by the CSwap project or by Anthropic. "Claude" and "Claude Code" are trademarks
+of Anthropic and are used here only to describe compatibility.
+
+-------------------------------------------------------------------------------
+
+CSwapBar is built on top of CSwap:
+
+  claude-swap (CSwap) — https://github.com/realiti4/claude-swap
+  Copyright (c) 2026 Onur Cetinkol
+  MIT License
+
+CSwapBar does not bundle or include CSwap source code. It runs the separately
+installed `cswap` command-line tool and reads its documented JSON output.
+If any CSwap code is ported into this project, its copyright notice and the
+MIT permission notice must be reproduced here.

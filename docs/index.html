@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSwapBar · Every Claude Code account, one click away</title>
+  <meta name="description" content="A native macOS menu-bar app for CSwap. See 5-hour and 7-day usage for every Claude Code account, switch in one click, and hide it all with Privacy Mode. Free and open source.">
+  <meta name="theme-color" content="#0D0A11">
+  <meta property="og:title" content="CSwapBar">
+  <meta property="og:description" content="Every Claude Code account, one click away in your macOS menu bar.">
+  <meta property="og:image" content="images/logo.png">
+  <link rel="icon" href="brand/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=6">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="glow glow-a"></div>
+    <div class="glow glow-b"></div>
+    <div class="grid"></div>
+  </div>
+
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="CSwapBar home">
+      <img src="brand/icon.svg" alt="" width="32" height="32">
+      <span>CSwapBar</span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#layouts">Layouts</a>
+      <a href="#themes">Themes</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#widgets">Widgets</a>
+      <a href="#install">Install</a>
+    </nav>
+    <a class="btn btn-ghost btn-sm" href="https://github.com/iamv1n/CSwapBar" rel="noopener">
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+  </header>
+
+  <main id="top">
+    <!-- ── Hero ─────────────────────────────────────────────── -->
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="hero-mark" aria-hidden="true">
+          <svg viewBox="0 0 100 100" class="triad">
+            <defs>
+              <linearGradient id="hb0" x1="11" y1="11" x2="65" y2="65" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFB38A"/><stop offset="1" stop-color="#E0603F"/></linearGradient>
+              <linearGradient id="hb1" x1="33.4" y1="29" x2="87.4" y2="83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F48FB1"/><stop offset="1" stop-color="#8E3B8F"/></linearGradient>
+              <linearGradient id="hb2" x1="12.6" y1="29" x2="66.6" y2="83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFD08A"/><stop offset="1" stop-color="#D9782F"/></linearGradient>
+              <mask id="hm0" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="black"/><circle cx="50" cy="38" r="27" fill="white"/><circle cx="60.39" cy="56" r="27" fill="black"/></mask>
+              <mask id="hm1" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="black"/><circle cx="60.39" cy="56" r="27" fill="white"/><circle cx="39.61" cy="56" r="27" fill="black"/></mask>
+              <mask id="hm2" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="black"/><circle cx="39.61" cy="56" r="27" fill="white"/><circle cx="50" cy="38" r="27" fill="black"/></mask>
+            </defs>
+            <g class="blades">
+              <circle cx="50" cy="38" r="27" fill="url(#hb0)" mask="url(#hm0)"/>
+              <circle cx="60.39" cy="56" r="27" fill="url(#hb1)" mask="url(#hm1)"/>
+              <circle cx="39.61" cy="56" r="27" fill="url(#hb2)" mask="url(#hm2)"/>
+            </g>
+            <circle class="core" cx="50" cy="50" r="4.2" fill="#FFF4EC"/>
+          </svg>
+        </div>
+        <p class="eyebrow">Native macOS · Free & open source</p>
+        <h1>Every Claude Code account,<br><span class="gradient-text">one click away.</span></h1>
+        <p class="lead">CSwapBar lives in your menu bar. See 5-hour and 7-day usage for every <a href="https://github.com/realiti4/claude-swap" rel="noopener">CSwap</a> account at a glance, switch instantly, and hide everything with one toggle when you share your screen.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/iamv1n/CSwapBar/releases/latest" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42l3.3 3.3V4a1 1 0 0 1 1-1zM5 19a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H5z"/></svg>
+            Download for macOS
+          </a>
+          <a class="btn btn-ghost" href="#install">Install guide</a>
+        </div>
+        <p class="fine">macOS 14+ · Apple Silicon · Requires CSwap 1.1+</p>
+      </div>
+      <div class="hero-visual">
+        <div class="menubar-mock" aria-hidden="true">
+          <span class="mb-dot"></span><span class="mb-spacer"></span>
+          <span class="mb-item"><img src="brand/mark.svg" alt="" class="mb-icon"> 42%</span>
+          <span class="mb-item mb-dim">Wi‑Fi</span><span class="mb-item mb-dim">Mon 9:41</span>
+        </div>
+        <img class="shot shot-main float" src="images/popover-widgets-rings.png" alt="CSwapBar popover showing four accounts with ring gauges in the macOS Widgets theme" width="420" height="675">
+        <img class="shot shot-back float-slow" src="images/popover-sky.png" alt="" aria-hidden="true" width="420" height="683">
+      </div>
+    </section>
+
+    <!-- ── Stats strip ──────────────────────────────────────── -->
+    <section class="stats reveal" aria-label="At a glance">
+      <div><strong data-count="23">23</strong><span>themes</span></div>
+      <div><strong data-count="4">4</strong><span>layouts</span></div>
+      <div><strong data-count="3">3</strong><span>desktop widgets</span></div>
+      <div><strong>~20&nbsp;MB</strong><span>memory</span></div>
+      <div><strong>0</strong><span>credentials stored</span></div>
+    </section>
+
+    <!-- ── Features ─────────────────────────────────────────── -->
+    <section id="features" class="section">
+      <header class="section-head reveal">
+        <p class="eyebrow">Features</p>
+        <h2>Built for people who juggle accounts.</h2>
+        <p>Everything CSwap knows, made glanceable and native. No backend, no telemetry.</p>
+      </header>
+      <div class="cards">
+        <article class="card reveal">
+          <div class="card-icon">⏱</div>
+          <h3>Usage at a glance</h3>
+          <p>5-hour and 7-day windows, reset countdowns, plan, and organization for every account, refreshed in the background.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">⇄</div>
+          <h3>Verified switching</h3>
+          <p>One click to switch. Success is shown only after CSwap confirms the new account is active.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">◐</div>
+          <h3>Privacy Mode</h3>
+          <p>⇧⌘P hides emails, names, organizations, and plans everywhere, including the menu bar. Ideal for screen sharing.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">▦</div>
+          <h3>Desktop widgets</h3>
+          <p>Gauge, Active Account, and All Accounts widgets that sit on your desktop or float on top.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">✦</div>
+          <h3>Make it yours</h3>
+          <p>23 themes, 13 accents, four layouts, and SF Pro, Rounded, New York, or Mono, all checked for readable contrast.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">⌁</div>
+          <h3>Tiny & local</h3>
+          <p>About 20 MB of memory, near-zero idle CPU. CSwap stays the source of truth; CSwapBar never touches credentials.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ── Layouts ──────────────────────────────────────────── -->
+    <section id="layouts" class="section split">
+      <div class="split-copy reveal">
+        <p class="eyebrow">Layouts</p>
+        <h2>Four ways to read your quota.</h2>
+        <p>Big numbers, classic bars, Battery-style rings, or a dense list that fits eight accounts. The popover always sizes itself to its content.</p>
+        <div class="tabs" role="tablist" aria-label="Card layouts">
+          <button role="tab" aria-selected="true" data-shot="images/popover-atelier-meters.png" data-alt="Meters layout in Atelier Dark">Meters</button>
+          <button role="tab" aria-selected="false" data-shot="images/popover-classic.png" data-alt="Classic layout in Graphite">Classic</button>
+          <button role="tab" aria-selected="false" data-shot="images/popover-widgets-rings.png" data-alt="Rings layout in macOS Widgets">Rings</button>
+          <button role="tab" aria-selected="false" data-shot="images/popover-paper-list.png" data-alt="List layout in Paper">List</button>
+        </div>
+      </div>
+      <div class="split-visual reveal">
+        <div class="frame"><img id="layout-shot" src="images/popover-atelier-meters.png" alt="Meters layout in Atelier Dark" width="420" height="707"></div>
+      </div>
+    </section>
+
+    <!-- ── Themes ───────────────────────────────────────────── -->
+    <section id="themes" class="section">
+      <header class="section-head reveal">
+        <p class="eyebrow">Themes</p>
+        <h2>23 themes. All of them readable.</h2>
+        <p>From native macOS materials and Apple-widget colors to vivid gradients and high contrast. Every palette passes WCAG contrast checks in the test suite.</p>
+      </header>
+      <div class="marquee" aria-label="Theme swatches">
+        <div class="marquee-track" id="theme-track"></div>
+      </div>
+      <div class="gallery reveal">
+        <figure><div class="frame"><img src="images/popover-sky.png" alt="Sky gradient theme" loading="lazy" width="420" height="683"></div><figcaption>Sky · Vivid</figcaption></figure>
+        <figure><div class="frame"><img src="images/popover-paper-list.png" alt="Paper light theme" loading="lazy" width="420" height="603"></div><figcaption>Paper · Light</figcaption></figure>
+        <figure><div class="frame"><img src="images/popover-widgets-rings.png" alt="macOS Widgets theme with rings" loading="lazy" width="420" height="675"></div><figcaption>macOS Widgets · Rings</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ── Privacy demo ─────────────────────────────────────── -->
+    <section id="privacy" class="section split reverse">
+      <div class="split-copy reveal">
+        <p class="eyebrow">Privacy Mode</p>
+        <h2>Share your screen, not your accounts.</h2>
+        <p>One toggle replaces emails, names, organizations, and plans with generic labels everywhere: cards, widgets, the menu bar, even screen-reader labels.</p>
+        <label class="switch-row">
+          <input type="checkbox" id="privacy-toggle">
+          <span class="switch" aria-hidden="true"></span>
+          <span>Try it: Privacy Mode <kbd>⇧</kbd><kbd>⌘</kbd><kbd>P</kbd></span>
+        </label>
+      </div>
+      <div class="split-visual reveal">
+        <div class="demo" id="privacy-demo" aria-live="polite">
+          <div class="demo-banner">Privacy Mode Enabled · Account information is hidden.</div>
+          <div class="demo-card active">
+            <div class="demo-avatar"></div>
+            <div class="demo-id">
+              <strong data-real="Personal" data-masked="Account 01">Personal</strong>
+              <small data-real="you@example.com · Pro" data-masked="">you@example.com · Pro</small>
+            </div>
+            <span class="demo-badge">Active</span>
+            <div class="demo-meters">
+              <div><label>5-HOUR</label><b>42%</b><i style="--p:42%;--c:#30D158"></i></div>
+              <div><label>7-DAY</label><b>64%</b><i style="--p:64%;--c:#FFD60A"></i></div>
+            </div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-avatar"></div>
+            <div class="demo-id">
+              <strong data-real="Work" data-masked="Account 02">Work</strong>
+              <small data-real="work@example.com · Example Corp · Max" data-masked="">work@example.com · Example Corp · Max</small>
+            </div>
+            <span class="demo-switch">Switch</span>
+            <div class="demo-meters">
+              <div><label>5-HOUR</label><b>88%</b><i style="--p:88%;--c:#FF9F0A"></i></div>
+              <div><label>7-DAY</label><b>97%</b><i style="--p:97%;--c:#FF453A"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Widgets ──────────────────────────────────────────── -->
+    <section id="widgets" class="section">
+      <header class="section-head reveal">
+        <p class="eyebrow">Desktop widgets</p>
+        <h2>Your quota, always in view.</h2>
+        <p>Three compact widgets that sit on your desktop like macOS widgets. Drag them anywhere. They follow your theme and Privacy Mode.</p>
+      </header>
+      <div class="widgets reveal">
+        <img src="images/widget-gauge.png" alt="Gauge widget: 42% 5-hour usage ring" loading="lazy" class="w-small" width="204" height="210">
+        <img src="images/widget-active.png" alt="Active Account widget with 5-hour and 7-day rings" loading="lazy" class="w-wide" width="384" height="204">
+        <img src="images/widget-accounts.png" alt="All Accounts widget listing usage for each account" loading="lazy" class="w-wide" width="384" height="204">
+      </div>
+    </section>
+
+    <!-- ── Install ──────────────────────────────────────────── -->
+    <section id="install" class="section">
+      <header class="section-head reveal">
+        <p class="eyebrow">Install</p>
+        <h2>Up and running in a minute.</h2>
+        <p>CSwapBar needs <a href="https://github.com/realiti4/claude-swap" rel="noopener">CSwap</a> with your accounts added.</p>
+      </header>
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step-n">1</span>
+          <h3>Install CSwap</h3>
+          <div class="code"><code>uv tool install claude-swap &amp;&amp; cswap add</code><button class="copy" data-copy="uv tool install claude-swap && cswap add">Copy</button></div>
+        </li>
+        <li class="step reveal">
+          <span class="step-n">2</span>
+          <h3>Download CSwapBar</h3>
+          <p>Get the DMG from <a href="https://github.com/iamv1n/CSwapBar/releases/latest" rel="noopener">GitHub Releases</a> and drag CSwapBar to Applications.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step-n">3</span>
+          <h3>Allow the first launch</h3>
+          <p>CSwapBar is open source but not notarized by Apple, so macOS asks once.</p>
+          <div class="tabs small" role="tablist" aria-label="First launch steps">
+            <button role="tab" aria-selected="true" data-panel="gk-15">macOS 15+</button>
+            <button role="tab" aria-selected="false" data-panel="gk-14">macOS 14</button>
+            <button role="tab" aria-selected="false" data-panel="gk-term">Terminal</button>
+          </div>
+          <!-- Panels share one grid cell, so the card is always as tall as the longest one. -->
+          <div class="panels">
+            <div class="panel is-active" id="gk-15">Try to open it and click <b>Done</b>. Then go to <b>System Settings → Privacy &amp; Security</b> and click <b>Open Anyway</b>.</div>
+            <div class="panel" id="gk-14" aria-hidden="true">Right-click CSwapBar in Applications, choose <b>Open</b>, then click <b>Open</b>.</div>
+            <div class="panel" id="gk-term" aria-hidden="true"><div class="code"><code>xattr -dr com.apple.quarantine /Applications/CSwapBar.app</code><button class="copy" data-copy="xattr -dr com.apple.quarantine /Applications/CSwapBar.app" tabindex="-1">Copy</button></div></div>
+          </div>
+        </li>
+      </ol>
+      <div class="alt-install reveal">
+        <p><b>Prefer no prompts?</b> Build it yourself with one line (needs the Command Line Tools):</p>
+        <div class="code"><code>curl -fsSL https://raw.githubusercontent.com/iamv1n/CSwapBar/main/scripts/get.sh | bash</code><button class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/iamv1n/CSwapBar/main/scripts/get.sh | bash">Copy</button></div>
+        <p class="fine"><a href="https://github.com/iamv1n/CSwapBar/blob/main/docs/INSTALL.md" rel="noopener">Full install guide</a> · updating, uninstalling, and the "damaged" message explained.</p>
+      </div>
+    </section>
+
+    <!-- ── Open source ──────────────────────────────────────── -->
+    <section class="section oss reveal">
+      <div class="oss-card">
+        <div>
+          <p class="eyebrow">Open source · MIT</p>
+          <h2>Built in the open.</h2>
+          <p>Swift 6, SwiftUI, 74 tests, and a roadmap with room for you: notifications, usage history, and a dashboard are next.</p>
+        </div>
+        <div class="oss-links">
+          <a class="btn btn-primary" href="https://github.com/iamv1n/CSwapBar" rel="noopener">Star on GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/iamv1n/CSwapBar/blob/main/ROADMAP.md" rel="noopener">Roadmap</a>
+          <a class="btn btn-ghost" href="https://github.com/iamv1n/CSwapBar/blob/main/CONTRIBUTING.md" rel="noopener">Contribute</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="author">
+      <span>Made by <b>Vineet Likhitkar</b></span>
+      <a href="https://github.com/iamv1n" rel="noopener">@iamv1n</a>
+    </div>
+    <p class="fine">
+      Built on <a href="https://github.com/realiti4/claude-swap" rel="noopener">CSwap</a> by Onur Cetinkol (MIT).
+      CSwapBar is an unofficial community project, not affiliated with CSwap or Anthropic.
+      "Claude" is a trademark of Anthropic, used only to describe compatibility.
+    </p>
+  </footer>
+
+  <script src="app.js?v=6" defer></script>
+</body>
+</html>

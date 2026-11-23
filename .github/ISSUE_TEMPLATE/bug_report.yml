@@ -1,0 +1,58 @@
+name: Bug report
+description: Something isn't working as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! **Please don't paste real emails, organization names, or tokens.** Redact them (e.g. `you@example.com`). Privacy Mode (⇧⌘P) is handy for screenshots.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the popover
+        2. Click Switch on …
+        3. …
+    validations:
+      required: true
+  - type: input
+    id: cswapbar-version
+    attributes:
+      label: CSwapBar version
+      description: Settings → About
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: cswap-version
+    attributes:
+      label: CSwap version
+      description: "`cswap --version`"
+      placeholder: "1.1.0"
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "15.2 (Apple Silicon)"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install it?
+      options: [DMG from GitHub Releases, get.sh one-liner, Built from source]
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or logs (redacted)
+      description: Theme/layout in use, relevant `cswap list --json` fields with identities removed, etc.
