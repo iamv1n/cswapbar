@@ -29,9 +29,9 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/popover-widgets-rings.png" width="300" alt="CSwapBar popover in the macOS Widgets theme with ring gauges">
+  <img src="docs/images/hc-meters.png" width="300" alt="CSwapBar popover in High Contrast with boxy corners: four accounts with 5-hour and 7-day meters and a suggestion to switch">
   &nbsp;&nbsp;
-  <img src="docs/images/popover-atelier-meters.png" width="300" alt="CSwapBar popover in the Atelier Dark theme with meters">
+  <img src="docs/images/hc-custom.png" width="300" alt="The same popover in a custom gradient theme">
 </p>
 
 > **Unofficial.** CSwapBar is a community project built on top of CSwap. It is not affiliated with or endorsed by the CSwap project or Anthropic.
@@ -58,29 +58,74 @@
 
 ## Screenshots
 
+### Layouts
+
 <table>
   <tr>
-    <td align="center"><img src="docs/images/popover-paper-list.png" width="260" alt="List layout, Paper theme"><br><sub><b>List</b> · Paper</sub></td>
-    <td align="center"><img src="docs/images/popover-sky.png" width="260" alt="Meters layout, Sky gradient theme"><br><sub><b>Meters</b> · Sky</sub></td>
-    <td align="center"><img src="docs/images/popover-privacy.png" width="260" alt="Privacy Mode in the light macOS Widgets theme"><br><sub><b>Privacy Mode</b> · macOS Widgets</sub></td>
+    <td align="center"><img src="docs/images/hc-classic.png" width="240" alt="Classic layout in High Contrast"><br><sub><b>Classic</b></sub></td>
+    <td align="center"><img src="docs/images/hc-rings.png" width="240" alt="Rings layout in High Contrast"><br><sub><b>Rings</b></sub></td>
+    <td align="center"><img src="docs/images/hc-list.png" width="240" alt="List layout in High Contrast"><br><sub><b>List</b></sub></td>
   </tr>
 </table>
 
+### Themes and shapes
+
+Every theme can be boxy or round. These use **Boxy** corners with no borders; Soft, Rounded, and Round are one click away in Settings → Appearance → Shape.
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/images/hc-light.png" width="240" alt="High Contrast Light theme with ring gauges"><br><sub><b>High Contrast Light</b> · Rings</sub></td>
+    <td align="center"><img src="docs/images/hc-midnight.png" width="240" alt="Midnight theme with classic bars"><br><sub><b>Midnight</b> · Classic</sub></td>
+    <td align="center"><img src="docs/images/hc-custom.png" width="240" alt="A custom gradient theme"><br><sub><b>Your own theme</b> · Gradient</sub></td>
+  </tr>
+</table>
+
+### Usage Island
+
+Turn it on in **Settings → General → Show CSwapBar in → Usage Island**. It replaces the menu bar icon, hugs the notch (or floats below the menu bar on screens without one), and expands when you hover.
+
 <p align="center">
-  <img src="docs/images/settings-layout.png" width="720" alt="Settings: choose a layout with live preview">
+  <img src="docs/images/hc-island.png" width="640" alt="Usage Island collapsed around the notch: a 5-hour ring and 42%">
+</p>
+<p align="center">
+  <img src="docs/images/hc-island-expanded.png" width="640" alt="Usage Island expanded: active account with 5-hour and weekly usage, a suggestion to switch, and the other accounts">
+</p>
+
+### History
+
+Press **⌘Y** (or History in the popover) for 30 days of usage per account and every switch, charted with Swift Charts.
+
+<p align="center">
+  <img src="docs/images/hc-dashboard.png" width="720" alt="Usage History dashboard: switches, busiest account, readings, and a chart of 5-hour usage per account over 7 days">
+</p>
+
+### Settings
+
+<p align="center">
+  <img src="docs/images/hc-settings.png" width="720" alt="Settings, Privacy page: Privacy Mode, a global keyboard shortcut, and identity options">
 </p>
 
 <details>
-<summary><b>More: Appearance, Widgets, and Privacy settings</b></summary>
+<summary><b>More: Layout, Appearance, Widgets, and Privacy settings</b></summary>
 <br>
 <p align="center">
-  <img src="docs/images/settings-widgets.png" width="720" alt="Settings: desktop widgets">
+  <img src="docs/images/settings-layout.png" width="720" alt="Settings: choose a layout with live preview">
 </p>
 <p align="center">
   <img src="docs/images/settings-appearance.png" width="720" alt="Settings: theme gallery, accent colors, typography">
 </p>
 <p align="center">
+  <img src="docs/images/settings-widgets.png" width="720" alt="Settings: desktop widgets">
+</p>
+<p align="center">
   <img src="docs/images/settings-privacy.png" width="720" alt="Settings: Privacy Mode and individual privacy controls">
+</p>
+<p align="center">
+  <img src="docs/images/popover-paper-list.png" width="240" alt="List layout, Paper theme">
+  &nbsp;
+  <img src="docs/images/popover-sky.png" width="240" alt="Meters layout, Sky gradient theme">
+  &nbsp;
+  <img src="docs/images/popover-privacy.png" width="240" alt="Privacy Mode in the light macOS Widgets theme">
 </p>
 </details>
 
@@ -91,11 +136,11 @@
 Turn them on in **Settings → Widgets**. Right-click a widget to hide it or open Settings.
 
 <p align="center">
-  <img src="docs/images/widget-gauge.png" height="150" alt="Gauge widget">
+  <img src="docs/images/hc-widget-gauge.png" height="160" alt="Gauge widget: 42% 5-hour usage ring">
   &nbsp;
-  <img src="docs/images/widget-active.png" height="150" alt="Active Account widget">
+  <img src="docs/images/hc-widget-active.png" height="160" alt="Active Account widget with 5-hour and 7-day rings">
   &nbsp;
-  <img src="docs/images/widget-accounts.png" height="190" alt="All Accounts widget">
+  <img src="docs/images/hc-widget-accounts.png" height="160" alt="All Accounts widget listing usage for each account">
 </p>
 
 These are built into the app, not WidgetKit, so they need no Xcode extension or Apple Developer account.
