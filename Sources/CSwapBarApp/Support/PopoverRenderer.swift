@@ -7,6 +7,8 @@ import SwiftUI
 ///     CSwapBar --render-popover out.png [--accounts 6] [--theme paper] [--accent teal]
 ///              [--layout rings] [--font rounded] [--size large] [--light] [--privacy] [--compact]
 ///     CSwapBar --render-settings out.png [--pane appearance] [same theme flags]
+///              [--corners boxy] [--borders bold] [--bars thick] [--controls matchCorners] [--custom [--gradient]]
+///              (custom themes and shape options are on the Appearance pane)
 ///
 /// For checking layout without clicking the menu bar, and for README screenshots.
 @MainActor
@@ -45,7 +47,9 @@ enum PopoverRenderer {
         let popoverFlag = args.firstIndex(of: "--render-popover")
         let settingsFlag = args.firstIndex(of: "--render-settings")
         let widgetFlag = args.firstIndex(of: "--render-widget")
-        guard let flag = popoverFlag ?? settingsFlag ?? widgetFlag, flag + 1 < args.count else { return false }
+        let dashboardFlag = args.firstIndex(of: "--render-dashboard")
+        let islandFlag = args.firstIndex(of: "--render-island")
+        guard let flag = popoverFlag ?? settingsFlag ?? widgetFlag ?? dashboardFlag ?? islandFlag, flag + 1 < args.count else { return false }
         let output = URL(fileURLWithPath: args[flag + 1])
 
         func value(_ name: String) -> String? {
@@ -67,6 +71,16 @@ enum PopoverRenderer {
         if let v = value("--per-page").flatMap(Int.init) { settings.accountsPerPage = v }
         if let v = value("--font").flatMap(FontChoice.init(rawValue:)) { settings.font = v }
         if let v = value("--size").flatMap(TextSizeChoice.init(rawValue:)) { settings.textSize = v }
+        if let v = value("--corners").flatMap(CornerStyle.init(rawValue:)) { settings.design.corners = v }
+        if let v = value("--borders").flatMap(BorderWeight.init(rawValue:)) { settings.design.borders = v }
+        if let v = value("--bars").flatMap(BarThickness.init(rawValue:)) { settings.design.bars = v }
+        if let v = value("--controls").flatMap(ControlShape.init(rawValue:)) { settings.design.controls = v }
+        if args.contains("--custom") {
+            // A sample custom theme, as if made in Theme Studio.
+            settings.addCustomTheme(CustomTheme(name: "Nightfall", isDark: true, gradient: args.contains("--gradient"),
+                                                background: 0x12151C, backgroundEnd: 0x2A1E3D, surface: 0x1D212B,
+                                                text: 0xECEEF3, accent: 0x7AA2F7))
+        }
         settings.privacy.privacyModeEnabled = args.contains("--privacy")
         settings.compactCards = args.contains("--compact")
         store.save(settings)
@@ -76,11 +90,17 @@ enum PopoverRenderer {
         let pane = value("--pane").flatMap(SettingsPane.init(rawValue:)) ?? .appearance
 
         Task { @MainActor in
-            let model = AppModel(client: SampleCSwapClient(count: count), store: store)
+            let model = AppModel(client: SampleCSwapClient(count: count), store: store, notifier: Notifier(live: false))
             await model.refresh()
 
             let widgetKind = value("--kind").flatMap(DesktopWidgetKind.init(rawValue:)) ?? .active
-            let content: AnyView = if settingsFlag != nil {
+            let content: AnyView = if islandFlag != nil {
+                islandPreview(model: model,
+                              style: value("--style").flatMap(UsageIslandPreferences.Style.init(rawValue:)) ?? .notch,
+                              expanded: args.contains("--expanded"))
+            } else if dashboardFlag != nil {
+                AnyView(DashboardView(model: model).frame(width: 900))
+            } else if settingsFlag != nil {
                 AnyView(SettingsView(model: model, initialPane: pane))
             } else if widgetFlag != nil {
                 AnyView(DesktopWidgetView(kind: widgetKind, model: model).padding(20))
@@ -105,5 +125,26 @@ enum PopoverRenderer {
             exit(0)
         }
         return true
+    }
+
+    /// The island on a 1512-pt-wide notched screen (or floating, with `--style bar`),
+    /// over a colorful backdrop so its black shape is visible.
+    @MainActor
+    private static func islandPreview(model: AppModel, style: UsageIslandPreferences.Style, expanded: Bool) -> AnyView {
+        let geometry = IslandGeometry(screen: CGRect(x: 0, y: 0, width: 1512, height: 982), menuBarHeight: 38,
+                                      notchWidth: 200, style: style)
+        let state = UsageIslandState()
+        state.expanded = expanded
+        let size = geometry.expanded.size
+        let height = expanded ? size.height + 50 : geometry.collapsed.height + 64
+        return AnyView(UsageIslandView(model: model, state: state, geometry: geometry)
+            .frame(width: size.width + 80, height: height, alignment: .top)
+            .background(alignment: .top) {
+                // A dark-blue desktop with a faint menu bar, like the top of a Mac screen.
+                ZStack(alignment: .top) {
+                    LinearGradient(colors: [Color(hex: 0x0B1A33), Color(hex: 0x1E3A6E)], startPoint: .top, endPoint: .bottom)
+                    Rectangle().fill(Color.black.opacity(0.28)).frame(height: geometry.hugsNotch ? geometry.collapsed.height : 24)
+                }
+            })
     }
 }

@@ -104,12 +104,16 @@ BIN="$(swift build --show-bin-path)/CSwapBar"
 # Render UI with fake sample accounts to PNG (no CSwap needed)
 $BIN --render-popover out.png --accounts 6 --theme widgets --layout rings [--privacy] [--compact] [--light] [--size large] [--font rounded] [--per-page 3]
 $BIN --render-settings out.png --pane appearance --theme midnight
+$BIN --render-settings out.png --pane appearance --custom [--gradient] --corners boxy --borders bold --bars thick --controls matchCorners
 $BIN --render-widget out.png --kind accounts --theme sky
 
 # Run the real app and open things on launch
 $BIN --open-popover --debug-layout           # logs the popover's real size
 $BIN --open-settings --pane general
 CSWAPBAR_CAPTURE=/tmp/shot $BIN --open-settings --pane layout   # writes /tmp/shot-settings.png
+$BIN --install-update-now                    # check GitHub and install a newer release (see below)
+$BIN --render-dashboard out.png              # dashboard with made-up history
+CSWAPBAR_AUTO_DRY_RUN=1 CSWAPBAR_AUTO_LOG=/tmp/auto.log $BIN --auto-dry-run   # run `cswap auto --dry-run` (never switches), log decisions
 ```
 
 The snapshot renderer can't draw `ScrollView`s or some AppKit controls. For layout bugs that depend on the real window width, use `--open-settings` with `CSWAPBAR_CAPTURE`.

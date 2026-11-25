@@ -23,6 +23,10 @@ CSwapBar is a front end for the CSwap CLI. By design, it:
 - Never reads, stores, or transmits Claude credentials. CSwap handles authentication.
 - Runs `cswap` directly with an argument list (never through a shell), with timeouts.
 - Stores only display preferences locally (UserDefaults). There's no network backend and no telemetry.
+- Keeps usage history (if enabled) in `~/Library/Application Support/CSwapBar/history.sqlite`: usage percentages, timestamps and switch records, with accounts stored as salted SHA-256 keys. No emails, names, or organizations. Deleted after 30 days, or on demand.
+- Runs `cswap auto` only when you turn on auto-switch. It runs under a small `/bin/sh` watchdog (the one place a shell is used) that stops it when CSwapBar exits; arguments are passed as positional parameters, never interpolated.
+- Makes one kind of network request: the update check, an anonymous `GET` to GitHub's public releases API (daily, and can be turned off in Settings → General). It sends nothing about you or your accounts.
+- Installs updates only after verifying them: the release `.zip` and its `.sha256` file are downloaded over HTTPS from github.com, the SHA-256 digest must match, and the unpacked app must have CSwapBar's bundle ID, the advertised version, and an intact code signature. Releases are ad-hoc signed, not notarized, so the checksum and HTTPS are what vouch for a download. Notarized builds and signed (EdDSA) update feeds are planned for 1.0.
 
 Issues inside CSwap itself (logins, token storage, switching) belong in the [CSwap project](https://github.com/realiti4/claude-swap).
 

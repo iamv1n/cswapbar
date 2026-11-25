@@ -6,7 +6,10 @@ import SwiftUI
 struct PagedAccountList: View {
     @Bindable var model: AppModel
     @State private var page = 0
+    /// Keyboard highlight. Nil until an arrow key is pressed, so mouse users never see it.
+    @State private var selection: AccountID?
     @Environment(\.theme) private var theme
+    @Environment(\.isSnapshot) private var isSnapshot
 
     private var ordered: [Account] { AccountPaging.ordered(model.accounts) }
     private var paging: AccountPaging {
@@ -33,6 +36,14 @@ struct PagedAccountList: View {
                         ) {
                             Task { await model.switchTo(account) }
                         }
+                        .overlay {
+                            if selection == account.id {
+                                RoundedRectangle(cornerRadius: theme.cardRadius + 3, style: .continuous)
+                                    .strokeBorder(theme.accent, lineWidth: 2)
+                                    .padding(-3)
+                                    .allowsHitTesting(false)
+                            }
+                        }
                     }
                 }
                 .padding(.horizontal, 16)
@@ -49,7 +60,63 @@ struct PagedAccountList: View {
                 .padding(.bottom, 10)
             }
         }
+        .background { if !isSnapshot { keyboardControls } }
         .onChange(of: paging.pageCount) { page = paging.clamp(page) }
+        .onDisappear { selection = nil }
+    }
+
+    // MARK: Keyboard
+
+    /// Invisible buttons that carry the popover's keyboard shortcuts:
+    /// ↑/↓ move the highlight (across pages), Return switches to it, ⌘1–⌘9 switch directly.
+    private var keyboardControls: some View {
+        ZStack {
+            Button("Previous account") { move(by: -1) }.keyboardShortcut(.upArrow, modifiers: [])
+            Button("Next account") { move(by: 1) }.keyboardShortcut(.downArrow, modifiers: [])
+            Button("Switch to highlighted account") { switchToSelection() }.keyboardShortcut(.return, modifiers: [])
+            ForEach(1...9, id: \.self) { number in
+                Button("Switch to account \(number)") { switchToAccount(at: number - 1) }
+                    .keyboardShortcut(KeyEquivalent(Character("\(number)")), modifiers: .command)
+            }
+        }
+        .buttonStyle(.plain)
+        .opacity(0)
+        .frame(width: 0, height: 0)
+        .accessibilityHidden(true)
+    }
+
+    private func move(by step: Int) {
+        let list = ordered
+        guard !list.isEmpty else { return }
+        let index: Int
+        if let selection, let current = list.firstIndex(where: { $0.id == selection }) {
+            index = min(max(current + step, 0), list.count - 1)
+        } else {
+            // First press starts on the first account of the visible page.
+            index = paging.range(forPage: paging.clamp(page)).lowerBound
+        }
+        select(index, in: list)
+    }
+
+    private func select(_ index: Int, in list: [Account]) {
+        selection = list[index].id
+        let newPage = index / max(paging.pageSize, 1)
+        if newPage != page {
+            withAnimation(.easeInOut(duration: 0.15)) { page = newPage }
+        }
+    }
+
+    private func switchToSelection() {
+        guard let selection, let account = ordered.first(where: { $0.id == selection }) else { return }
+        guard !account.isActive, !model.isSwitching else { return }
+        Task { await model.switchTo(account) }
+    }
+
+    private func switchToAccount(at index: Int) {
+        let list = ordered
+        guard list.indices.contains(index) else { return }
+        select(index, in: list)
+        switchToSelection()
     }
 }
 

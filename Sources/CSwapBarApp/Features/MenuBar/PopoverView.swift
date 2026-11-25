@@ -16,6 +16,8 @@ private struct PopoverContent: View {
     @Bindable var model: AppModel
     @Environment(\.theme) private var theme
     @Environment(\.openAppSettings) private var openSettings
+    @Environment(\.closePopover) private var closePopover
+    @Environment(\.openDashboard) private var openDashboard
     @Environment(\.snapshotHeight) private var snapshotHeight
 
     var body: some View {
@@ -26,6 +28,13 @@ private struct PopoverContent: View {
                 privacyBanner
                     .padding(.horizontal, 16)
                     .padding(.top, 12)
+            }
+            if let recommendation = model.recommendation, !model.isSwitching {
+                RecommendationStrip(recommendation: recommendation, preferences: model.privacy) {
+                    Task { await model.switchTo(recommendation.account) }
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 12)
             }
             content
             if snapshotHeight != nil { Spacer(minLength: 0) }
@@ -132,7 +141,7 @@ private struct PopoverContent: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 9)
-        .background(theme.accent.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .background(theme.accent.opacity(0.12), in: RoundedRectangle(cornerRadius: theme.innerRadius, style: .continuous))
         .accessibilityElement(children: .combine)
     }
 
@@ -192,6 +201,33 @@ private struct PopoverContent: View {
         HStack(spacing: 8) {
             freshnessLabel
             Spacer()
+            if let update = model.updater?.availableUpdate {
+                Button {
+                    model.settingsPane = .general
+                    openSettings()
+                } label: {
+                    Label("Update to \(update.version)", systemImage: "arrow.down.circle.fill")
+                        .font(theme.type.font(11, .semibold))
+                        .foregroundStyle(theme.accent)
+                }
+                .buttonStyle(.quiet)
+                .help("A new version of CSwapBar is available")
+            }
+            Button {
+                openDashboard()
+            } label: {
+                Label("History", systemImage: "chart.xyaxis.line")
+                    .font(theme.type.font(11, .medium))
+                    .foregroundStyle(theme.muted)
+            }
+            .buttonStyle(.quiet)
+            .keyboardShortcut("y")
+            .help("Usage history (⌘Y)")
+            Button("Close") { closePopover() }
+                .keyboardShortcut(.cancelAction)
+                .opacity(0)
+                .frame(width: 0, height: 0)
+                .accessibilityHidden(true)
             Button("Quit") { NSApplication.shared.terminate(nil) }
                 .buttonStyle(.quiet)
                 .font(theme.type.font(11, .medium))
@@ -309,7 +345,7 @@ struct AccountSummaryPills: View {
         .foregroundStyle(color)
         .padding(.horizontal, 6)
         .padding(.vertical, 2)
-        .background(color.opacity(tinted ? 0.14 : 0.1), in: Capsule())
+        .background(color.opacity(tinted ? 0.14 : 0.1), in: theme.controlShape)
         .lineLimit(1)
         .fixedSize()
     }
@@ -325,5 +361,36 @@ private struct PopoverHeight: ViewModifier {
         } else {
             content.fixedSize(horizontal: false, vertical: true)
         }
+    }
+}
+
+/// "Work has the most headroom: 94% left (you have 39%)   [Switch]"
+/// Uses CSwap's `best` rule; shown only once the active account is getting tight.
+struct RecommendationStrip: View {
+    let recommendation: AccountRecommendation
+    let preferences: PrivacyPreferences
+    let onSwitch: () -> Void
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "sparkles")
+                .font(theme.type.icon(12, .semibold))
+                .foregroundStyle(theme.accent)
+            Text(recommendation.explanation(preferences: preferences))
+                .font(theme.type.caption)
+                .foregroundStyle(theme.text)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 6)
+            Button("Switch", action: onSwitch)
+                .buttonStyle(AccentButtonStyle())
+                .help("Switch to the account with the most quota left (CSwap's \"best\" rule)")
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 9)
+        .background(theme.accent.opacity(0.1), in: RoundedRectangle(cornerRadius: theme.innerRadius + 2, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: theme.innerRadius + 2, style: .continuous).strokeBorder(theme.accent.opacity(0.25), lineWidth: 1))
+        .accessibilityElement(children: .combine)
     }
 }

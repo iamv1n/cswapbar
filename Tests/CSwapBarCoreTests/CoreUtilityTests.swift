@@ -48,6 +48,18 @@ struct BinaryLocatorTests {
         #expect(locator.locate()?.path == "/custom/cswap")
     }
 
+    @Test func overrideIsStrictAndLive() {
+        let box = CSwapPathSetting()
+        let locator = CSwapBinaryLocator(configuredPathProvider: { box.value }, homeDirectory: "/Users/test",
+                                         pathEnvironment: "/usr/bin", isExecutable: { $0 == "/usr/bin/cswap" })
+        #expect(locator.locate()?.path == "/usr/bin/cswap")      // automatic
+        box.value = "~/tools/cswap"
+        #expect(locator.candidates == [NSString("~/tools/cswap").expandingTildeInPath])
+        #expect(locator.locate() == nil)                          // no silent fallback
+        box.value = "  "
+        #expect(locator.locate()?.path == "/usr/bin/cswap")      // blank means automatic again
+    }
+
     @Test func returnsNilWhenNothingIsExecutable() {
         let locator = CSwapBinaryLocator(homeDirectory: "/nowhere", pathEnvironment: "", isExecutable: { _ in false })
         #expect(locator.locate() == nil)
@@ -144,5 +156,46 @@ struct ProcessRunnerTests {
         await #expect(throws: ProcessRunnerError.self) {
             try await ProcessRunner().run(executable: URL(fileURLWithPath: "/nonexistent/cswap"), arguments: [], timeout: 5)
         }
+    }
+}
+
+@Suite("Configurable thresholds and CSwap's menu bar")
+struct ThresholdAndMenubarTests {
+    @Test func thresholdsNormalize() {
+        #expect(UsageThresholds.default.normalized == .default)
+        let messy = UsageThresholds(warning: 90, high: 50, critical: 300).normalized
+        #expect(messy == UsageThresholds(warning: 90, high: 91, critical: 100))
+        let low = UsageThresholds(warning: -5, high: 0, critical: 0.4).normalized
+        #expect(low == UsageThresholds(warning: 1, high: 2, critical: 3))
+        #expect(UsageThresholds(warning: 99.6, high: 99.6, critical: 99.6).normalized == UsageThresholds(warning: 98, high: 99, critical: 100))
+    }
+
+    @Test func customThresholdsChangeLevels() {
+        let t = UsageThresholds(warning: 40, high: 70, critical: 90)
+        #expect(t.level(for: 39) == .healthy)
+        #expect(t.level(for: 40) == .warning)
+        #expect(t.level(for: 75) == .high)
+        #expect(t.level(for: 90) == .critical)
+    }
+
+    @Test func thresholdsPersistAndRepair() throws {
+        var settings = AppSettings()
+        settings.usageThresholds = UsageThresholds(warning: 50, high: 75, critical: 90)
+        settings.cswapPath = "/opt/tools/cswap"
+        let decoded = try JSONDecoder().decode(AppSettings.self, from: JSONEncoder().encode(settings))
+        #expect(decoded == settings)
+        let broken = #"{"usageThresholds":{"warning":95,"high":10,"critical":20},"cswapPath":"   "}"#
+        let repaired = try JSONDecoder().decode(AppSettings.self, from: Data(broken.utf8))
+        #expect(repaired.usageThresholds == UsageThresholds(warning: 95, high: 96, critical: 97))
+        #expect(repaired.cswapPath == nil)
+    }
+
+    @Test func detectsCSwapMenubarPassively() {
+        #expect(CSwapMenubarStatus.launchAgentPath(home: "/Users/someone") == "/Users/someone/Library/LaunchAgents/com.cswap.menubar.plist")
+        #expect(CSwapMenubarStatus.isCSwapMenubarApp(bundleName: "claude-swap Menubar.app", localizedName: nil))
+        #expect(CSwapMenubarStatus.isCSwapMenubarApp(bundleName: nil, localizedName: "claude-swap Menubar"))
+        #expect(!CSwapMenubarStatus.isCSwapMenubarApp(bundleName: "CSwapBar.app", localizedName: "CSwapBar"))
+        #expect(CSwapMenubarStatus(isRunning: false, startsAtLogin: true).isPresent)
+        #expect(!CSwapMenubarStatus(isRunning: false, startsAtLogin: false).isPresent)
     }
 }

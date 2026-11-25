@@ -57,3 +57,27 @@ struct SampleCSwapClient: CSwapClient {
         SwitchResponse(switched: true, reason: "switched", message: nil, warnings: [])
     }
 }
+
+extension SampleData {
+    /// Made-up history for screenshots (`--render-dashboard`): smooth daily cycles
+    /// per sample account. Never real data.
+    @MainActor
+    static func historySamples(model: AppModel, range: TimeInterval) -> [UsageSample] {
+        let now = Date()
+        let step: TimeInterval = range > 2 * 86_400 ? 3_600 : 900
+        var out: [UsageSample] = []
+        for (index, account) in model.accounts.prefix(4).enumerated() {
+            let key = model.hasher.key(for: account.id)
+            var t = now.addingTimeInterval(-range)
+            while t <= now {
+                let hours = t.timeIntervalSince1970 / 3_600
+                let phase = Double(index) * 1.7
+                let five = max(0, min(100, 45 + 40 * sin(hours / 2.4 + phase) + Double(index * 6)))
+                let seven = max(0, min(100, 20 + Double(index) * 14 + 25 * (1 + sin(hours / 30 + phase)) / 2))
+                out.append(UsageSample(date: t, account: key, fiveHour: five.rounded(), sevenDay: seven.rounded()))
+                t += step
+            }
+        }
+        return out
+    }
+}

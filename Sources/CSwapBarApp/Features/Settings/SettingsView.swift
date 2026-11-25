@@ -3,13 +3,16 @@ import CSwapBarCore
 import SwiftUI
 
 enum SettingsPane: String, CaseIterable, Identifiable {
-    case general, appearance, layout, widgets, privacy, about
+    case general, notifications, switching, history, appearance, layout, widgets, privacy, about
 
     var id: Self { self }
 
     var title: String {
         switch self {
         case .general: "General"
+        case .notifications: "Notifications"
+        case .switching: "Switching"
+        case .history: "History"
         case .appearance: "Appearance"
         case .layout: "Layout"
         case .widgets: "Widgets"
@@ -22,6 +25,9 @@ enum SettingsPane: String, CaseIterable, Identifiable {
     var symbol: String {
         switch self {
         case .general: "slider.horizontal.3"
+        case .notifications: "bell"
+        case .switching: "arrow.triangle.2.circlepath"
+        case .history: "chart.xyaxis.line"
         case .appearance: "paintpalette"
         case .layout: "rectangle.3.group"
         case .widgets: "square.grid.2x2"
@@ -34,15 +40,14 @@ enum SettingsPane: String, CaseIterable, Identifiable {
 /// Settings window: ambient background, floating glass sidebar, pages.
 struct SettingsView: View {
     @Bindable var model: AppModel
-    @State private var pane: SettingsPane = .appearance
 
-    init(model: AppModel, initialPane: SettingsPane = .appearance) {
+    init(model: AppModel, initialPane: SettingsPane? = nil) {
         self.model = model
-        _pane = State(initialValue: initialPane)
+        if let initialPane { model.settingsPane = initialPane }
     }
 
     var body: some View {
-        SettingsShell(model: model, pane: $pane)
+        SettingsShell(model: model, pane: $model.settingsPane)
             .themed(model.settings)
     }
 }
@@ -58,21 +63,33 @@ private struct SettingsShell: View {
     static let detailWidth: CGFloat = windowWidth - sidebarWidth
 
     var body: some View {
-        HStack(spacing: 0) {
-            sidebar
-                .frame(width: Self.sidebarWidth)
-            Group {
-                if isSnapshot {
-                    paddedPage.fixedSize(horizontal: false, vertical: true)
-                } else {
-                    ScrollView { paddedPage }
-                        .scrollIndicators(.never)
-                }
+        if isSnapshot {
+            // Fixed size, so renders are uniform.
+            HStack(spacing: 0) {
+                sidebar.frame(width: Self.sidebarWidth)
+                paddedPage
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(width: Self.detailWidth)
             }
-            .frame(width: Self.detailWidth)
+            .frame(width: Self.windowWidth)
+            .background(AmbientBackground())
+        } else {
+            // Resizable: the sidebar keeps its width, the page grows. Never smaller
+            // than the original size, so controls never squeeze or wrap.
+            HStack(spacing: 0) {
+                sidebar.frame(width: Self.sidebarWidth)
+                ScrollView {
+                    paddedPage
+                        .frame(maxWidth: SettingsShellMetrics.maxPageWidth)
+                        .frame(maxWidth: .infinity)
+                }
+                .scrollIndicators(.automatic)
+                .frame(minWidth: Self.detailWidth, maxWidth: .infinity)
+            }
+            .frame(minWidth: Self.windowWidth, maxWidth: .infinity,
+                   minHeight: SettingsShellMetrics.minHeight, maxHeight: .infinity)
+            .background(AmbientBackground())
         }
-        .frame(width: Self.windowWidth, height: isSnapshot ? nil : 640)
-        .background(AmbientBackground())
     }
 
     private var paddedPage: some View {
@@ -102,9 +119,20 @@ private struct SettingsShell: View {
             .padding(.top, 4)
             .padding(.bottom, 18)
 
-            ForEach(SettingsPane.allCases) { item in
+            ForEach(Array(SettingsPane.allCases.enumerated()), id: \.element) { offset, item in
                 SidebarItem(pane: item, isSelected: pane == item) {
                     withAnimation(.easeOut(duration: 0.18)) { pane = item }
+                }
+                .help("\(item.title) (⌘\(offset + 1))")
+                // ⌘1, ⌘2… jump to each page.
+                .background {
+                    if offset < 9 {
+                        Button(item.title) { withAnimation(.easeOut(duration: 0.18)) { pane = item } }
+                            .keyboardShortcut(KeyEquivalent(Character("\(offset + 1)")), modifiers: .command)
+                            .opacity(0)
+                            .frame(width: 0, height: 0)
+                            .accessibilityHidden(true)
+                    }
                 }
             }
 
@@ -148,6 +176,9 @@ private struct SettingsShell: View {
     private var page: some View {
         switch pane {
         case .general: GeneralPage(model: model)
+        case .notifications: NotificationsPage(model: model)
+        case .switching: SwitchingPage(model: model)
+        case .history: HistoryPage(model: model)
         case .appearance: AppearancePage(model: model)
         case .layout: LayoutPage(model: model)
         case .widgets: WidgetsPage(model: model)
@@ -205,14 +236,41 @@ private struct GeneralPage: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
-            SettingsPageHeader(title: "General", subtitle: "Menu bar, refresh, and the CSwap connection.")
+            SettingsPageHeader(title: "General", subtitle: "Menu bar, refresh, the CSwap connection, and updates.")
 
-            SettingsGroup("Menu Bar") {
+            SettingsGroup("Startup", footer: loginFooter) {
+                SettingsRow("Open at login", subtitle: loginSubtitle, symbol: "power") {
+                    HStack(spacing: 8) {
+                        if model.loginItem.state == .needsApproval {
+                            Button("Allow…") { model.loginItem.openSystemSettings() }
+                                .buttonStyle(AccentButtonStyle())
+                        }
+                        Toggle("Open at login", isOn: Binding(
+                            get: { model.loginItem.state == .on || model.loginItem.state == .needsApproval },
+                            set: { model.loginItem.set($0) }))
+                            .toggleStyle(.themedSwitch).labelsHidden()
+                            .disabled(model.loginItem.state == .unavailable)
+                    }
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+                model.loginItem.refresh()
+            }
+
+            SettingsGroup("Menu Bar", footer: model.settings.usageIsland.enabled
+                          ? "The menu bar icon is hidden while CSwapBar lives in the Usage Island. Style options are in Widgets." : nil) {
+                SettingsRow("Show CSwapBar in", symbol: "macwindow") {
+                    ThemedSegmented(selection: $model.settings.usageIsland.enabled,
+                                    options: [(false, "Menu bar"), (true, "Usage Island")])
+                }
+                RowDivider()
                 SettingsRow("Show next to the icon", symbol: "menubar.rectangle") {
                     ThemedSegmented(selection: $model.settings.menuBarDisplay, options: [
                         (.iconOnly, "Icon"), (.accountName, "Name"), (.fiveHourUsage, "5-hour"), (.peakUsage, "Highest"),
                     ])
                 }
+                .opacity(model.settings.usageIsland.enabled ? 0.45 : 1)
+                .disabled(model.settings.usageIsland.enabled)
             }
 
             SettingsGroup("Refresh", footer: "CSwap caches usage, so refreshing often is cheap.") {
@@ -231,12 +289,79 @@ private struct GeneralPage: View {
                     }
                 }
                 RowDivider()
+                SettingsRow("Executable", subtitle: executableDetail, symbol: "terminal") {
+                    HStack(spacing: 8) {
+                        if model.settings.cswapPath != nil {
+                            Button("Automatic") { model.settings.cswapPath = nil }
+                                .buttonStyle(.quiet)
+                                .font(theme.type.caption)
+                                .foregroundStyle(theme.muted)
+                        }
+                        Button("Choose…", action: chooseExecutable)
+                            .buttonStyle(AccentButtonStyle())
+                    }
+                }
+                RowDivider()
                 SettingsRow("Reconnect", subtitle: "Re-detect CSwap after installing or upgrading it.", symbol: "bolt.horizontal") {
-                    Button("Reconnect") { Task { await model.reconnect() } }
-                        .buttonStyle(AccentButtonStyle())
+                    Button("Reconnect") {
+                        Task {
+                            await model.reconnect()
+                            await model.checkCSwapMenubarIfDue(force: true)
+                        }
+                    }
+                    .buttonStyle(AccentButtonStyle())
                 }
             }
+
+            if let menubar = model.cswapMenubar, menubar.isPresent {
+                CSwapMenubarNotice(status: menubar)
+            }
+
+            KeyboardSection(model: model)
+
+            UpdatesSection(model: model)
         }
+    }
+
+    private var loginSubtitle: String? {
+        switch model.loginItem.state {
+        case .needsApproval: "Waiting for your OK in System Settings → General → Login Items."
+        case .unavailable: "Available in the app bundle (scripts/build.sh), not with swift run."
+        case .on, .off: model.loginItem.lastError
+        }
+    }
+
+    private var loginFooter: String? {
+        Bundle.main.bundleURL.deletingLastPathComponent().lastPathComponent == "Applications" || model.loginItem.state == .unavailable
+            ? nil
+            : "Tip: move CSwapBar to Applications first, so the login item keeps pointing at the right copy."
+    }
+
+    private var executableDetail: String {
+        if let path = model.settings.cswapPath {
+            return "Set by you: \(path)"
+        }
+        return "Found automatically in ~/.local/bin, Homebrew, or your PATH."
+    }
+
+    /// Lets the user point at a `cswap` installed somewhere unusual.
+    private func chooseExecutable() {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.showsHiddenFiles = true
+        panel.treatsFilePackagesAsDirectories = true
+        panel.message = "Choose the cswap executable (for example ~/.local/bin/cswap)"
+        panel.prompt = "Use This"
+        if let path = model.settings.cswapPath {
+            panel.directoryURL = URL(fileURLWithPath: (path as NSString).deletingLastPathComponent)
+        } else {
+            panel.directoryURL = URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".local/bin")
+        }
+        NSApp.activate(ignoringOtherApps: true)
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        model.settings.cswapPath = url.path
     }
 
     private var statusText: String {
@@ -253,7 +378,8 @@ private struct GeneralPage: View {
         switch model.connection {
         case .connected(let install): install.executable.path
         case .failed(let message): message
-        case .notInstalled: "Install with: uv tool install claude-swap"
+        case .notInstalled: model.settings.cswapPath.map { "No working cswap at \($0). Choose another, or use Automatic." }
+            ?? "Install with: uv tool install claude-swap"
         default: nil
         }
     }
@@ -268,6 +394,154 @@ private struct GeneralPage: View {
     }
 }
 
+// MARK: - Notifications
+
+private struct NotificationsPage: View {
+    @Bindable var model: AppModel
+    @Environment(\.theme) private var theme
+
+    private var prefs: NotificationPreferences { model.settings.notifications }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            SettingsPageHeader(title: "Notifications",
+                               subtitle: "Usage alerts, account switches, and logins. The wording follows your privacy settings.")
+
+            permissionBanner
+
+            SettingsGroup {
+                SettingsRow("Allow notifications", symbol: "bell.badge") {
+                    Toggle("Allow notifications", isOn: $model.settings.notifications.enabled)
+                        .toggleStyle(.themedSwitch).labelsHidden()
+                }
+                RowDivider()
+                SettingsRow("Play a sound", symbol: "speaker.wave.2") {
+                    Toggle("Play a sound", isOn: $model.settings.notifications.playSound)
+                        .toggleStyle(.themedSwitch).labelsHidden()
+                }
+                .dimmed(!prefs.enabled)
+            }
+
+            SettingsGroup("Usage", footer: "Each level alerts once, then again after usage drops back (for example, when the window resets).") {
+                SettingsRow("Usage alerts", subtitle: "For the 5-hour and weekly windows of every account.", symbol: "gauge.with.dots.needle.67percent") {
+                    Toggle("Usage alerts", isOn: $model.settings.notifications.usageAlerts)
+                        .toggleStyle(.themedSwitch).labelsHidden()
+                }
+                RowDivider()
+                SettingsRow("Alert at", symbol: "chart.bar") {
+                    HStack(spacing: 6) {
+                        ForEach(NotificationPreferences.availableLevels, id: \.self) { level in
+                            LevelChip(level: level, isOn: prefs.isLevelEnabled(level)) {
+                                model.settings.notifications.setLevel(level, enabled: !prefs.isLevelEnabled(level))
+                            }
+                        }
+                    }
+                }
+                .dimmed(!prefs.usageAlerts)
+            }
+            .dimmed(!prefs.enabled)
+
+            SettingsGroup("Accounts") {
+                SettingsRow("Account switches",
+                            subtitle: "When CSwap or the terminal changes the active account, and when a switch from CSwapBar fails.",
+                            symbol: "arrow.left.arrow.right") {
+                    Toggle("Account switches", isOn: $model.settings.notifications.switchAlerts)
+                        .toggleStyle(.themedSwitch).labelsHidden()
+                }
+                RowDivider()
+                SettingsRow("Login needed", subtitle: "When an account needs a new login before CSwap can use it.",
+                            symbol: "person.badge.key") {
+                    Toggle("Login needed", isOn: $model.settings.notifications.loginAlerts)
+                        .toggleStyle(.themedSwitch).labelsHidden()
+                }
+            }
+            .dimmed(!prefs.enabled)
+
+            SettingsGroup {
+                SettingsRow("Send a test notification", subtitle: "Check how alerts look with your current privacy settings.",
+                            symbol: "paperplane") {
+                    Button("Send test") { model.sendTestNotification() }
+                        .buttonStyle(AccentButtonStyle())
+                        .disabled(!prefs.enabled || model.notifier.permission == .unsupported)
+                }
+            }
+        }
+        // Re-check while the page is open, so changes made in System Settings show up right away.
+        .task {
+            while !Task.isCancelled {
+                await model.notifier.refreshPermission()
+                try? await Task.sleep(for: .seconds(2))
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            Task { await model.notifier.refreshPermission() }
+        }
+    }
+
+    @ViewBuilder
+    private var permissionBanner: some View {
+        switch model.notifier.permission {
+        case .denied:
+            banner("Notifications are turned off for CSwapBar in System Settings.", symbol: "bell.slash") {
+                Button("Open System Settings") { model.notifier.openSystemSettings() }
+                    .buttonStyle(AccentButtonStyle())
+            }
+        case .unsupported:
+            banner("Notifications need the app bundle. Build it with scripts/build.sh instead of swift run.",
+                   symbol: "shippingbox") { EmptyView() }
+        case .allowed, .unknown:
+            EmptyView()
+        }
+    }
+
+    private func banner<Control: View>(_ text: String, symbol: String, @ViewBuilder control: () -> Control) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: symbol)
+                .font(theme.type.icon(15, .semibold))
+                .foregroundStyle(theme.warning)
+            Text(text)
+                .font(theme.type.caption)
+                .foregroundStyle(theme.text)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 8)
+            control()
+        }
+        .card()
+    }
+}
+
+/// Toggleable percentage chip.
+private struct LevelChip: View {
+    let level: Int
+    let isOn: Bool
+    let action: () -> Void
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        Button(action: action) {
+            Text("\(level)%")
+                .font(theme.type.font(12, .semibold).monospacedDigit())
+                .lineLimit(1)
+                .fixedSize()
+                .foregroundStyle(isOn ? theme.onAccent : theme.muted)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(isOn ? AnyShapeStyle(theme.accent) : AnyShapeStyle(Color.primary.opacity(0.06)), in: Capsule())
+                .overlay(Capsule().strokeBorder(isOn ? .clear : theme.border, lineWidth: 1))
+        }
+        .buttonStyle(.quiet)
+        .accessibilityLabel("Alert at \(level) percent")
+        .accessibilityAddTraits(isOn ? .isSelected : [])
+    }
+}
+
+private extension View {
+    /// Greys out and disables controls that have no effect right now.
+    func dimmed(_ off: Bool) -> some View {
+        opacity(off ? 0.45 : 1).disabled(off)
+    }
+}
+
 // MARK: - Appearance
 
 private struct AppearancePage: View {
@@ -279,7 +553,7 @@ private struct AppearancePage: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
-            SettingsPageHeader(title: "Appearance", subtitle: "Themes, accent color, and type. Changes apply instantly.")
+            SettingsPageHeader(title: "Appearance", subtitle: "Themes, your own colors, shape, and type. Changes apply instantly.")
 
             LivePreview(model: model)
 
@@ -292,13 +566,18 @@ private struct AppearancePage: View {
                         .padding(.leading, 4)
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(ThemeChoice.choices(in: group), id: \.self) { choice in
-                            ThemeTile(choice: choice, accent: model.settings.accent, isSelected: model.settings.theme == choice) {
-                                model.settings.theme = choice
+                            ThemeTile(choice: choice, accent: model.settings.accent,
+                                      isSelected: model.settings.customThemeID == nil && model.settings.theme == choice) {
+                                model.settings.selectBuiltInTheme(choice)
                             }
                         }
                     }
                 }
             }
+
+            CustomThemesSection(model: model)
+
+            ShapeSection(model: model)
 
             SettingsGroup("Accent Color", footer: theme.style == .gradient ? "Vivid themes use white controls, so the accent color doesn't apply." : nil) {
                 AccentRow(selection: $model.settings.accent, palette: theme.palette)
@@ -362,7 +641,7 @@ private struct ThemeTile: View {
 }
 
 /// A miniature popover painted in one palette.
-private struct MiniPopover: View {
+struct MiniPopover: View {
     let palette: ThemePalette
     let accent: AccentChoice
 
@@ -522,6 +801,8 @@ private struct LayoutPage: View {
                 }
             }
 
+            UsageColorsSection(model: model)
+
             LivePreview(model: model)
         }
     }
@@ -608,7 +889,7 @@ private struct LayoutSchematic: View {
 }
 
 /// Real account cards, in the current theme and layout, with fake sample accounts.
-private struct LivePreview: View {
+struct LivePreview: View {
     let model: AppModel
     @Environment(\.theme) private var theme
 
@@ -685,6 +966,8 @@ private struct WidgetsPage: View {
                         .disabled(model.settings.desktopWidgets.isEmpty)
                 }
             }
+
+            UsageIslandSection(model: model)
         }
     }
 
@@ -723,7 +1006,7 @@ private struct PrivacyPage: View {
                 .frame(width: 46, height: 46)
                 VStack(alignment: .leading, spacing: 3) {
                     Text("Privacy Mode").font(theme.type.title).foregroundStyle(theme.text)
-                    Text("Hides emails, names, organizations, and plans everywhere. Shortcut: ⇧⌘P in the menu.")
+                    Text(shortcutSummary)
                         .font(theme.type.caption)
                         .foregroundStyle(theme.muted)
                         .fixedSize(horizontal: false, vertical: true)
@@ -734,6 +1017,27 @@ private struct PrivacyPage: View {
                     .labelsHidden()
             }
             .card(highlighted: overridden)
+
+            SettingsGroup("Keyboard Shortcut", footer: "Works in any app, even when the popover is closed. Use ⌘, ⌃ or ⌥ in the combination.") {
+                SettingsRow("Global shortcut", subtitle: shortcutStatusText, symbol: "command") {
+                    Toggle("Global shortcut", isOn: $model.settings.privacyShortcutEnabled)
+                        .toggleStyle(.themedSwitch).labelsHidden()
+                }
+                RowDivider()
+                SettingsRow("Toggle Privacy Mode", subtitle: "Click, then press the keys you want.", symbol: "keyboard") {
+                    HStack(spacing: 8) {
+                        if model.settings.privacyShortcut != .defaultPrivacyToggle {
+                            Button("Reset") { model.settings.privacyShortcut = .defaultPrivacyToggle }
+                                .buttonStyle(.quiet)
+                                .font(theme.type.caption)
+                                .foregroundStyle(theme.muted)
+                        }
+                        ShortcutRecorder(model: model, shortcut: $model.settings.privacyShortcut,
+                                         isEnabled: $model.settings.privacyShortcutEnabled)
+                    }
+                }
+                .opacity(model.settings.privacyShortcutEnabled ? 1 : 0.45)
+            }
 
             SettingsGroup("Identity", footer: overridden ? "Privacy Mode is on, so all identity details are hidden." : nil) {
                 identityRow("Hide account emails", "envelope", $model.settings.privacy.hideEmails)
@@ -770,6 +1074,23 @@ private struct PrivacyPage: View {
                   systemImage: "info.circle")
                 .font(theme.type.footnote)
                 .foregroundStyle(theme.muted)
+        }
+    }
+
+    private var shortcutSummary: String {
+        let base = "Hides emails, names, organizations, and plans everywhere."
+        guard model.settings.privacyShortcutEnabled, model.privacyShortcutStatus != .unavailable else {
+            return base + " Shortcut: ⇧⌘P in the menu."
+        }
+        return base + " Shortcut: \(model.settings.privacyShortcut.displayString) anywhere."
+    }
+
+    private var shortcutStatusText: String? {
+        guard model.settings.privacyShortcutEnabled else { return "Off. ⇧⌘P still works while the popover is open." }
+        return switch model.privacyShortcutStatus {
+        case .unavailable: "\(model.settings.privacyShortcut.displayString) is used by another app. Pick a different one."
+        case .active: "Active: \(model.settings.privacyShortcut.displayString) toggles Privacy Mode from any app."
+        case .off: nil
         }
     }
 
@@ -832,5 +1153,10 @@ private struct AboutPage: View {
 
 /// Shared with StatusItemController so the window and layout agree.
 enum SettingsShellMetrics {
+    /// Smallest (and default) window width.
     static let width: CGFloat = 800
+    static let defaultHeight: CGFloat = 640
+    static let minHeight: CGFloat = 520
+    /// Pages stop widening here and center, so lines stay readable on big windows.
+    static let maxPageWidth: CGFloat = 920
 }

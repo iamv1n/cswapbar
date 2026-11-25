@@ -42,12 +42,18 @@
 
 - **Every account at a glance.** 5-hour and 7-day usage, reset countdowns, plan, and organization for each account CSwap manages.
 - **One-click switching.** CSwapBar reports success only after CSwap confirms the switch.
-- **Privacy Mode.** One toggle (⇧⌘P) hides emails, names, organizations, and plans everywhere: cards, the menu-bar title, notifications, and screen-reader labels. Accounts become "Account 01", "Account 02", and so on.
+- **Privacy Mode.** One toggle hides emails, names, organizations, and plans everywhere: cards, the menu-bar title, notifications, and screen-reader labels. Accounts become "Account 01", "Account 02", and so on. Toggle it from any app with a global shortcut (**⌃⌥⌘P** by default, and you can record your own).
+- **Notifications.** Alerts when usage crosses 80%, 95%, or 100% (with the reset time), when CSwap or the terminal switches accounts, when a switch fails, and when an account needs a new login. The wording follows your privacy settings.
+- **Usage Island.** Prefer the notch to the menu bar? CSwapBar can live in a small black bar at the top of the screen instead of the menu bar icon (one or the other). Hover to expand, click to open. Hugs the notch or floats below the menu bar.
 - **Desktop widgets.** Three compact widgets (Gauge, Active Account, All Accounts) that sit on your desktop or float on top. Drag them anywhere; they follow your theme and Privacy Mode.
 - **Four layouts.** Meters, Classic, Rings, or a dense List. Pages of 4 by default, and the popover's height always fits its content.
 - **23 themes.** Including **macOS Widgets** (Apple system colors, like the Calendar and Battery widgets), **macOS** (system materials and your accent color), vivid gradients, and high-contrast options. Every theme passes WCAG contrast checks in the test suite.
+- **Custom themes and shapes.** Right in the theme picker: make your own themes from five colors (solid or gradient), with readability warnings, and share them as small JSON files. Shape any theme: boxy to round corners, border weight, bar thickness, and pill or square buttons.
 - **Mac-native typography.** SF Pro, SF Pro Rounded, New York, or SF Mono, in three text sizes.
-- **Local-first and private.** No backend, no telemetry, no stored credentials. CSwap stays the source of truth.
+- **History and dashboard.** 30 days of usage per account and every switch, charted with Swift Charts and exportable as CSV. Stored only on your Mac, with accounts as anonymous keys.
+- **Suggestions and auto-switch.** See which account has the most quota left, or let CSwap's auto-switch (`cswap auto`) change accounts for you. Auto-switch is off unless you turn it on.
+- **Updates from GitHub.** Checks GitHub Releases once a day, and can download, verify, and install new versions for you.
+- **Local-first and private.** No backend, no telemetry, no stored credentials. The only network request is the optional daily update check to GitHub. CSwap stays the source of truth.
 - **Tiny.** About 20 MB of memory and near-zero idle CPU.
 
 ## Screenshots
@@ -137,17 +143,20 @@ cd cswapbar
 
 | Action | How |
 | --- | --- |
-| Open the popover | Click the ⇄ icon in the menu bar |
-| Switch account | Click **Switch** on any card |
-| Privacy Mode | Eye icon, or **⇧⌘P** while the popover is open |
+| Open the popover | Click the ⇄ icon in the menu bar, or **⌃⌥⌘C** from any app |
+| Switch account | Click **Switch**, press **⌘1**–**⌘9**, or highlight a card with **↑ / ↓** and press **Return** |
+| Privacy Mode | **⌃⌥⌘P** from any app, the eye icon, or **⇧⌘P** while the popover is open |
 | Refresh now | **⌘R** |
 | Next / previous page | **→ / ←** |
-| Settings | Gear icon, or **⌘,** |
+| Settings | Gear icon, or **⌘,** (then **⌘1**–**⌘9** for each page) |
+| Close | **Esc** (popover), **⌘W** (Settings) |
 | Quit | **⌘Q** |
+
+Both global shortcuts can be changed or turned off (Settings → General → Keyboard, and Settings → Privacy). Settings → General lists every shortcut.
 
 ## How it works
 
-CSwapBar holds no credentials and has no backend. It runs the `cswap` CLI directly, without a shell and with timeouts (`list --json`, `status --json`, `switch <n> --json`), and shows the results. After every switch it asks CSwap for the active account and reports success only once CSwap confirms it.
+CSwapBar holds no credentials and has no backend. Apart from the update check (an anonymous request to GitHub's public API, which you can turn off), it makes no network requests. It runs the `cswap` CLI directly, without a shell and with timeouts (`list --json`, `status --json`, `switch <n> --json`), and shows the results. After every switch it asks CSwap for the active account and reports success only once CSwap confirms it.
 
 CSwap also ships its own menu bar (`cswap menubar`). CSwapBar is an alternative front end focused on a native interface, Privacy Mode, and customization. If you run both, both will poll usage.
 

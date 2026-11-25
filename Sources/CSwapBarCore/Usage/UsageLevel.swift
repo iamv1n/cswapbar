@@ -22,6 +22,14 @@ public struct UsageThresholds: Sendable, Equatable, Codable {
         self.critical = critical
     }
 
+    /// Whole percentages, 1–100, each band at least 1 point above the one before.
+    public var normalized: UsageThresholds {
+        let w = min(max(warning.rounded(), 1), 98)
+        let h = min(max(high.rounded(), w + 1), 99)
+        let c = min(max(critical.rounded(), h + 1), 100)
+        return UsageThresholds(warning: w, high: h, critical: c)
+    }
+
     public func level(for percent: Double?) -> UsageLevel {
         guard let percent else { return .unknown }
         switch percent {

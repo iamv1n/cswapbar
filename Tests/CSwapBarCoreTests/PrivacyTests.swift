@@ -184,9 +184,22 @@ struct PrivacySafeTextTests {
 }
 
 @Suite("Settings persistence")
-struct SettingsPersistenceTests {
+final class SettingsPersistenceTests {
+    /// Suites created by this test; removed afterwards so no plist is left in ~/Library/Preferences.
+    private var suiteNames: [String] = []
+
+    deinit {
+        let folder = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Preferences")
+        for name in suiteNames {
+            UserDefaults(suiteName: name)?.removePersistentDomain(forName: name)
+            CFPreferencesAppSynchronize(name as CFString)
+            try? FileManager.default.removeItem(at: folder.appendingPathComponent("\(name).plist"))
+        }
+    }
+
     private func freshDefaults() -> UserDefaults {
         let name = "CSwapBarTests.\(UUID().uuidString)"
+        suiteNames.append(name)
         let defaults = UserDefaults(suiteName: name)!
         defaults.removePersistentDomain(forName: name)
         return defaults

@@ -14,25 +14,29 @@ Where CSwapBar is headed. Plans change. Open an [issue](https://github.com/iamv1
 
 ## 🔜 0.2: Daily driver
 
-- [ ] **Launch at login** toggle (`SMAppService`)
-- [ ] **Notifications** for usage thresholds (80% / 95% / 100%), switch results, and accounts that need login. They respect Privacy Mode; the notification text is already implemented and tested.
-- [ ] **Global Privacy Mode shortcut** that works anywhere, not only while the popover is open
-- [ ] **Configurable usage thresholds** (the color bands)
-- [ ] Detect `cswap menubar` running at the same time and explain what that means
-- [ ] CSwap executable path override in Settings → General · *help wanted*
+- [x] **Launch at login** toggle (`SMAppService`)
+- [x] **Notifications** for usage thresholds (80% / 95% / 100%), switch results, and accounts that need login. They respect Privacy Mode.
+- [x] **Global Privacy Mode shortcut** that works anywhere, not only while the popover is open
+- [x] **Keyboard control**: a global shortcut to open the popover, arrow-key navigation, ⌘1–⌘9 switching
+- [x] **Custom themes** (make, edit, import/export) and **shape options** (corners, borders, bars, buttons)
+- [x] **Update checks** against GitHub Releases, with optional checksum-verified installs
+- [x] Resizable Settings window
+- [x] **Configurable usage thresholds** (the color bands)
+- [x] Detect `cswap menubar` running at the same time and explain what that means
+- [x] CSwap executable path override in Settings → General
 
 ## 🗓 0.3: History & insight
 
-- [ ] **Usage history** in local SQLite: 30-day retention, account IDs hashed, never emails
-- [ ] **Dashboard window** with Swift Charts: usage over time per account, plus switch history
-- [ ] Export history as CSV
-- [ ] **Explained account recommendations** ("Work: most 5-hour headroom"), consistent with `cswap switch --strategy best`
-- [ ] Follow `cswap auto --json` events to reflect CSwap's own auto-switching without extra polling
+- [x] **Usage history** in local SQLite: 30-day retention, account IDs hashed, never emails
+- [x] **Dashboard window** with Swift Charts: usage over time per account, plus switch history
+- [x] Export history as CSV
+- [x] **Explained account recommendations** ("Work: most 5-hour headroom"), consistent with `cswap switch --strategy best`
+- [x] Optional **auto-switch** that runs `cswap auto --json` and follows its events, refreshing as soon as CSwap switches
 
 ## 🎯 1.0: Polished release
 
 - [ ] **Notarized** builds and an official **Homebrew cask**. This needs an Apple Developer Program membership; sponsorship welcome.
-- [ ] In-app updates (Sparkle, EdDSA-signed)
+- [ ] Signed update feeds (Sparkle, EdDSA) on top of the current checksum-verified GitHub updates
 - [ ] Localization groundwork · *help wanted*
 - [ ] Accessibility audit (VoiceOver, keyboard navigation, Reduce Motion)
 - [ ] Universal binary (Apple Silicon and Intel) in releases
@@ -41,7 +45,6 @@ Where CSwapBar is headed. Plans change. Open an [issue](https://github.com/iamv1
 
 - **WidgetKit widgets** for Notification Center, alongside the in-app desktop widgets. Needs an Xcode project target and app-group signing.
 - **Windows and Linux** companions, for example a Tauri tray app reusing the same CSwap JSON contract. CSwap itself is cross-platform.
-- Custom user themes (import/export a palette)
 - Per-account notes and colors
 
 ## Not planned

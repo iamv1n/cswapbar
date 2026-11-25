@@ -5,20 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CSwapBar for Mac · Every Claude Code account, one click away</title>
   <meta name="description" content="A native menu-bar app for CSwap, only for Mac (macOS 14+). See 5-hour and 7-day usage for every Claude Code account, switch in one click, and hide it all with Privacy Mode. Free and open source.">
-  <meta name="theme-color" content="#0D0A11">
+  <meta name="theme-color" content="#12110f">
   <meta property="og:title" content="CSwapBar">
   <meta property="og:description" content="Every Claude Code account, one click away in your Mac menu bar. Only for macOS.">
   <meta property="og:image" content="images/logo.png">
   <link rel="icon" href="brand/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=21">
 </head>
 <body>
-  <div class="ambient" aria-hidden="true">
-    <div class="glow glow-a"></div>
-    <div class="glow glow-b"></div>
-    <div class="grid"></div>
-  </div>
-
+  <div class="progress" aria-hidden="true"></div>
   <header class="nav">
     <a class="brand" href="#top" aria-label="CSwapBar home">
       <img src="brand/icon.svg" alt="" width="32" height="32">
@@ -27,10 +22,10 @@
     </a>
     <nav aria-label="Primary">
       <a href="#features">Features</a>
+      <a href="#island">Island</a>
       <a href="#layouts">Layouts</a>
-      <a href="#themes">Themes</a>
+      <a href="#history">History</a>
       <a href="#privacy">Privacy</a>
-      <a href="#widgets">Widgets</a>
       <a href="#install">Install</a>
     </nav>
     <a class="btn btn-ghost btn-sm" href="https://github.com/iamv1n/cswapbar" rel="noopener">
@@ -42,55 +37,85 @@
   <main id="top">
     <!-- ── Hero ─────────────────────────────────────────────── -->
     <section class="hero">
+      <div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       <div class="hero-copy">
-        <div class="hero-mark" aria-hidden="true">
-          <svg viewBox="0 0 100 100" class="triad">
-            <defs>
-              <linearGradient id="hb0" x1="11" y1="11" x2="65" y2="65" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFB38A"/><stop offset="1" stop-color="#E0603F"/></linearGradient>
-              <linearGradient id="hb1" x1="33.4" y1="29" x2="87.4" y2="83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F48FB1"/><stop offset="1" stop-color="#8E3B8F"/></linearGradient>
-              <linearGradient id="hb2" x1="12.6" y1="29" x2="66.6" y2="83" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFD08A"/><stop offset="1" stop-color="#D9782F"/></linearGradient>
-              <mask id="hm0" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="black"/><circle cx="50" cy="38" r="27" fill="white"/><circle cx="60.39" cy="56" r="27" fill="black"/></mask>
-              <mask id="hm1" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="black"/><circle cx="60.39" cy="56" r="27" fill="white"/><circle cx="39.61" cy="56" r="27" fill="black"/></mask>
-              <mask id="hm2" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><rect width="100" height="100" fill="black"/><circle cx="39.61" cy="56" r="27" fill="white"/><circle cx="50" cy="38" r="27" fill="black"/></mask>
-            </defs>
-            <g class="blades">
-              <circle cx="50" cy="38" r="27" fill="url(#hb0)" mask="url(#hm0)"/>
-              <circle cx="60.39" cy="56" r="27" fill="url(#hb1)" mask="url(#hm1)"/>
-              <circle cx="39.61" cy="56" r="27" fill="url(#hb2)" mask="url(#hm2)"/>
-            </g>
-            <circle class="core" cx="50" cy="50" r="4.2" fill="#FFF4EC"/>
-          </svg>
-        </div>
-        <p class="mac-pill"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9H4V5zm2 0v7h12V5H6zM1 16h22v1a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3v-1z"/></svg>Only for Mac · macOS 14 Sonoma or later</p>
-        <p class="eyebrow">Native macOS · Free & open source</p>
-        <h1>Every Claude Code account,<br><span class="gradient-text">one click away.</span></h1>
-        <p class="lead">CSwapBar lives in your menu bar. See 5-hour and 7-day usage for every <a href="https://github.com/realiti4/claude-swap" rel="noopener">CSwap</a> account at a glance, switch instantly, and hide everything with one toggle when you share your screen.</p>
+        <p class="mac-pill"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9H4V5zm2 0v7h12V5H6zM1 16h22v1a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3v-1z"/></svg>CSwapBar for Mac · macOS 14 or later</p>
+        <h1 class="split-words">Your Claude quota.<br><span class="accent-text">Always one glance away.</span></h1>
+        <p class="lead">Every Claude Code account, live in your menu bar or right at the notch. Switch in one click. Get warned before the limit. Vanish it all when you share your screen.</p>
         <div class="cta">
-          <a class="btn btn-primary" href="https://github.com/iamv1n/cswapbar/releases/latest" rel="noopener">
+          <a class="btn btn-primary btn-lg" href="https://github.com/iamv1n/cswapbar/releases/latest" rel="noopener">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42l3.3 3.3V4a1 1 0 0 1 1-1zM5 19a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H5z"/></svg>
             Download for Mac
           </a>
-          <a class="btn btn-ghost" href="#install">Install guide</a>
+          <a class="btn btn-ghost btn-lg" href="#features">See what it does</a>
         </div>
-        <p class="fine">Mac only (no Windows or Linux) · macOS 14+ · Apple Silicon · Requires CSwap 1.1+</p>
+        <p class="fine">Free · macOS 14 or later · Apple Silicon · Needs <a href="https://github.com/realiti4/claude-swap" rel="noopener">CSwap</a> 1.1+</p>
       </div>
-      <div class="hero-visual">
-        <div class="menubar-mock" aria-hidden="true">
-          <span class="mb-dot"></span><span class="mb-spacer"></span>
-          <span class="mb-item"><img src="brand/mark.svg" alt="" class="mb-icon"> 42%</span>
-          <span class="mb-item mb-dim">Wi‑Fi</span><span class="mb-item mb-dim">Mon 9:41</span>
+
+      <div class="device-wrap reveal zoom">
+        <div class="device" id="device">
+          <div class="screen">
+            <div class="wallpaper" aria-hidden="true"></div>
+            <div class="sys-menubar" aria-hidden="true">
+              <span class="sys-apple"></span><b>Terminal</b><span>Shell</span><span>Edit</span><span class="hide-sm">View</span>
+              <span class="sys-spacer"></span>
+              <span class="sys-item sys-cswap" id="demo-status"><img src="brand/mark.svg" alt=""> <span id="mb-pct">42%</span></span>
+              <span class="sys-item hide-sm">Wi‑Fi</span><span class="sys-item" id="mb-clock">Mon 9:41</span>
+            </div>
+            <div class="notch" aria-hidden="true"></div>
+            <!-- Scripted demo (app.js): open the popover, switch accounts, open Settings. Without JS it simply shows the popover. -->
+            <div class="dp open" id="demo-popover" aria-label="CSwapBar popover with four accounts">
+              <div class="dp-head">
+                <img src="brand/icon.svg" alt="">
+                <div><b>CSwapBar</b><small><span>4 accounts</span><span class="ok">4 ready</span></small></div>
+                <span class="dp-tools"><i>◉</i><i>↻</i><i class="dp-gear" id="demo-gear">⚙</i></span>
+              </div>
+              <div class="dp-card active" data-card="0">
+                <div class="dp-row"><span class="dp-avatar"></span><div class="dp-id"><b>Personal</b><small>you@example.com · Pro</small></div><span class="dp-badge">Active</span></div>
+                <div class="dp-meters">
+                  <div><label>5-HOUR</label><strong>42<i>%</i></strong><span class="dp-bar" style="--p:42%;--c:#5EE38A"></span></div>
+                  <div><label>7-DAY</label><strong>64<i>%</i></strong><span class="dp-bar" style="--p:64%;--c:#FFD24D"></span></div>
+                </div>
+              </div>
+              <div class="dp-card" data-card="1">
+                <div class="dp-row"><span class="dp-avatar"></span><div class="dp-id"><b>Work</b><small>work@example.com · Example Corp</small></div><button type="button" tabindex="-1" class="dp-switch" data-switch="1">Switch</button></div>
+                <div class="dp-meters">
+                  <div><label>5-HOUR</label><strong>18<i>%</i></strong><span class="dp-bar" style="--p:18%;--c:#5EE38A"></span></div>
+                  <div><label>7-DAY</label><strong>37<i>%</i></strong><span class="dp-bar" style="--p:37%;--c:#5EE38A"></span></div>
+                </div>
+              </div>
+              <div class="dp-card" data-card="2">
+                <div class="dp-row"><span class="dp-avatar"></span><div class="dp-id"><b>Side</b><small>side@example.com · Max 5x</small></div><button type="button" tabindex="-1" class="dp-switch" data-switch="2">Switch</button></div>
+                <div class="dp-meters">
+                  <div><label>5-HOUR</label><strong>88<i>%</i></strong><span class="dp-bar" style="--p:88%;--c:#FFA24D"></span></div>
+                  <div><label>7-DAY</label><strong>97<i>%</i></strong><span class="dp-bar" style="--p:97%;--c:#FF6B6B"></span></div>
+                </div>
+              </div>
+              <div class="dp-card" data-card="3">
+                <div class="dp-row"><span class="dp-avatar"></span><div class="dp-id"><b>Team</b><small>team@example.com · Acme Studio</small></div><button type="button" tabindex="-1" class="dp-switch" data-switch="3">Switch</button></div>
+                <div class="dp-meters">
+                  <div><label>5-HOUR</label><strong>100<i>%</i></strong><span class="dp-bar" style="--p:100%;--c:#FF6B6B"></span></div>
+                  <div><label>7-DAY</label><strong>72<i>%</i></strong><span class="dp-bar" style="--p:72%;--c:#FFD24D"></span></div>
+                </div>
+              </div>
+              <div class="dp-foot"><span>✓ Updated just now</span><span>History · Quit</span></div>
+            </div>
+            <img class="demo-settings" id="demo-settings" src="images/hc-settings.png" width="800" height="640"
+                 alt="CSwapBar Settings window, Privacy page: Privacy Mode, a global keyboard shortcut, and identity options">
+            <svg class="demo-cursor" id="demo-cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l14 9-6.2 1.3L9.6 20z" fill="#fff" stroke="#000" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="demo-click" id="demo-click" aria-hidden="true"></span>
+          </div>
         </div>
-        <img class="shot shot-main float" src="images/popover-widgets-rings.png" alt="CSwapBar popover showing four accounts with ring gauges in the macOS Widgets theme" width="420" height="675">
-        <img class="shot shot-back float-slow" src="images/popover-sky.png" alt="" aria-hidden="true" width="420" height="683">
+        <div class="device-base" aria-hidden="true"></div>
       </div>
     </section>
 
     <!-- ── Stats strip ──────────────────────────────────────── -->
     <section class="stats reveal" aria-label="At a glance">
-      <div><strong data-count="23">23</strong><span>themes</span></div>
+      <div><strong data-count="23" data-suffix="+">23+</strong><span>themes, plus your own</span></div>
       <div><strong data-count="4">4</strong><span>layouts</span></div>
-      <div><strong data-count="3">3</strong><span>desktop widgets</span></div>
-      <div><strong>~20&nbsp;MB</strong><span>memory</span></div>
+      <div><strong data-count="30" data-suffix="&nbsp;days">30&nbsp;days</strong><span>of local history</span></div>
+      <div><strong data-count="20" data-prefix="~" data-suffix="&nbsp;MB">~20&nbsp;MB</strong><span>memory</span></div>
       <div><strong>0</strong><span>credentials stored</span></div>
     </section>
 
@@ -98,40 +123,119 @@
     <section id="features" class="section">
       <header class="section-head reveal">
         <p class="eyebrow">Features</p>
-        <h2>Built for people who juggle accounts.</h2>
-        <p>Everything CSwap knows, made glanceable and native. No backend, no telemetry.</p>
+        <h2>What it does.</h2>
+        <p>Everything CSwap knows about your accounts, in one place. The only network request is an optional update check.</p>
       </header>
-      <div class="cards">
-        <article class="card reveal">
-          <div class="card-icon">⏱</div>
-          <h3>Usage at a glance</h3>
-          <p>5-hour and 7-day windows, reset countdowns, plan, and organization for every account, refreshed in the background.</p>
+      <div class="bento">
+        <article class="tile tile-wide reveal">
+          <div class="tile-copy">
+            <h3>Knows before you do.</h3>
+            <p>Alerts at 80, 95, and 100%, with the reset time. Plus outside switches and logins that need you.</p>
+          </div>
+          <div class="toast-stage" aria-hidden="true">
+            <div class="toast" id="toast">
+              <img src="brand/icon.svg" alt="">
+              <div><b id="toast-title">Usage threshold reached</b><span id="toast-body">Work has reached 95% 5-hour usage.</span></div>
+              <time>now</time>
+            </div>
+          </div>
         </article>
-        <article class="card reveal">
-          <div class="card-icon">⇄</div>
-          <h3>Verified switching</h3>
-          <p>One click to switch. Success is shown only after CSwap confirms the new account is active.</p>
+
+        <article class="tile reveal">
+          <div class="tile-copy">
+            <h3>Keyboard first.</h3>
+            <p>Open it from anywhere. Arrows and Return to switch.</p>
+          </div>
+          <div class="keys" aria-label="Control Option Command C">
+            <span class="key">⌃</span><span class="key">⌥</span><span class="key">⌘</span><span class="key">C</span>
+          </div>
         </article>
-        <article class="card reveal">
-          <div class="card-icon">◐</div>
-          <h3>Privacy Mode</h3>
-          <p>⇧⌘P hides emails, names, organizations, and plans everywhere, including the menu bar. Ideal for screen sharing.</p>
+
+        <article class="tile reveal">
+          <div class="tile-copy">
+            <h3>It tells you where to go.</h3>
+            <p>When you run low, it suggests the account with the most quota left.</p>
+          </div>
+          <div class="suggest-demo" aria-hidden="true">
+            <span>✦</span><p><b>Side</b> has the most headroom: <b>69% left</b></p><em>Switch</em>
+          </div>
         </article>
-        <article class="card reveal">
-          <div class="card-icon">▦</div>
-          <h3>Desktop widgets</h3>
-          <p>Gauge, Active Account, and All Accounts widgets that sit on your desktop or float on top.</p>
+
+        <article class="tile reveal">
+          <div class="tile-copy">
+            <h3>Remembers everything.</h3>
+            <p>30 days of usage, charted. Only on your Mac.</p>
+          </div>
+          <svg class="spark" viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true">
+            <path class="spark-a" d="M0,70 C30,62 45,20 75,24 S120,78 150,60 S200,8 225,18 S270,70 300,40"/>
+            <path class="spark-b" d="M0,80 C40,78 60,55 90,58 S140,40 170,46 S230,74 260,52 S290,30 300,28"/>
+          </svg>
         </article>
-        <article class="card reveal">
-          <div class="card-icon">✦</div>
-          <h3>Make it yours</h3>
-          <p>23 themes, 13 accents, four layouts, and SF Pro, Rounded, New York, or Mono, all checked for readable contrast.</p>
+
+        <article class="tile reveal">
+          <div class="tile-copy">
+            <h3>Yours, down to the corner.</h3>
+            <p>23 themes or your own. Boxy to round.</p>
+          </div>
+          <div class="swatches" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
         </article>
-        <article class="card reveal">
-          <div class="card-icon">⌁</div>
-          <h3>Tiny & local</h3>
-          <p>About 20 MB of memory, near-zero idle CPU. CSwap stays the source of truth; CSwapBar never touches credentials.</p>
+
+        <article class="tile tile-full reveal">
+          <div class="tile-copy">
+            <h3>Updates itself. Carefully.</h3>
+            <p>New versions come straight from GitHub, and only install once the checksum, bundle, version, and signature all check out.</p>
+          </div>
+          <div class="update-demo" aria-hidden="true">
+            <div class="update-row"><span>CSwapBar 0.2.0</span><em class="update-status">Downloading…</em></div>
+            <div class="update-bar"><i></i></div>
+            <ul class="update-checks"><li>SHA-256</li><li>Bundle ID</li><li>Version</li><li>Signature</li></ul>
+          </div>
         </article>
+      </div>
+    </section>
+
+    <!-- ── Usage Island ─────────────────────────────────────── -->
+    <section id="island" class="section split">
+      <div class="split-copy reveal">
+        <p class="eyebrow">Usage Island</p>
+        <h2>Your quota, right at the notch.</h2>
+        <p>Prefer the top of the screen to the menu bar? CSwapBar can live in a small black bar that blends into the camera notch. It replaces the menu bar icon, so you only ever see one.</p>
+        <ul class="points">
+          <li><b>Glance:</b> a ring and your 5-hour percentage, colored by your thresholds.</li>
+          <li><b>Hover:</b> both windows, reset times, the best next account, and the rest of your accounts.</li>
+          <li><b>Click</b> (or <kbd>⌃</kbd><kbd>⌥</kbd><kbd>⌘</kbd><kbd>C</kbd>): the full popover drops down from it.</li>
+          <li><b>No notch?</b> Pick Floating bar, a slim pill under the menu bar on any display.</li>
+        </ul>
+      </div>
+      <div class="split-visual reveal">
+        <!-- A live replica of the island: hover, focus, or tap to expand. -->
+        <div class="island-stage" id="island-stage">
+          <div class="island-menubar" aria-hidden="true"><span></span><span class="isl-clock">Mon 9:41</span></div>
+          <div class="island" id="island-demo" tabindex="0" role="button" aria-expanded="false"
+               aria-label="Usage Island demo: 5-hour usage 42%. Press to expand.">
+            <div class="isl-top">
+              <span class="isl-ring" style="--p:42;--c:#5EE38A"></span><span class="isl-dim">5h</span>
+              <span class="isl-gap"></span>
+              <b class="isl-pct">42%</b>
+            </div>
+            <div class="isl-body">
+              <div class="isl-head"><b>Personal</b><span class="isl-dim">you@example.com · Pro</span><em>ACTIVE</em></div>
+              <div class="isl-windows">
+                <div><small>5-HOUR <i>49m</i></small><strong>42%</strong><span class="isl-bar" style="--p:42%;--c:#5EE38A"></span></div>
+                <div><small>WEEKLY <i>1d</i></small><strong>64%</strong><span class="isl-bar" style="--p:64%;--c:#FFD24D"></span></div>
+              </div>
+              <div class="isl-suggest"><span>✦</span><p>Side has the most headroom: 69% left</p><button type="button" tabindex="-1">Switch</button></div>
+              <ul class="isl-others">
+                <li><span>Work</span><b style="color:#FFA24D">88%</b><b style="color:#FF6B6B">97%</b></li>
+                <li><span>Side</span><b style="color:#5EE38A">12%</b><b style="color:#5EE38A">31%</b></li>
+                <li><span>Team</span><b style="color:#FF6B6B">100%</b><b style="color:#FFD24D">72%</b></li>
+              </ul>
+            </div>
+          </div>
+          <p class="island-hint">Hover or tap the island</p>
+        </div>
       </div>
     </section>
 
@@ -140,16 +244,28 @@
       <div class="split-copy reveal">
         <p class="eyebrow">Layouts</p>
         <h2>Four ways to read your quota.</h2>
-        <p>Big numbers, classic bars, Battery-style rings, or a dense list that fits eight accounts. The popover always sizes itself to its content.</p>
+        <p>Big numbers, classic bars, Battery-style rings, or a dense list that fits eight accounts. The popover always sizes itself to its content, and <kbd>↑</kbd> <kbd>↓</kbd> <kbd>↩</kbd> drive it from the keyboard.</p>
         <div class="tabs" role="tablist" aria-label="Card layouts">
-          <button role="tab" aria-selected="true" data-shot="images/popover-atelier-meters.png" data-alt="Meters layout in Atelier Dark">Meters</button>
-          <button role="tab" aria-selected="false" data-shot="images/popover-classic.png" data-alt="Classic layout in Graphite">Classic</button>
-          <button role="tab" aria-selected="false" data-shot="images/popover-widgets-rings.png" data-alt="Rings layout in macOS Widgets">Rings</button>
-          <button role="tab" aria-selected="false" data-shot="images/popover-paper-list.png" data-alt="List layout in Paper">List</button>
+          <button role="tab" aria-selected="true" data-shot="images/hc-meters.png" data-alt="Meters layout in High Contrast">Meters</button>
+          <button role="tab" aria-selected="false" data-shot="images/hc-classic.png" data-alt="Classic layout in High Contrast">Classic</button>
+          <button role="tab" aria-selected="false" data-shot="images/hc-rings.png" data-alt="Rings layout in High Contrast">Rings</button>
+          <button role="tab" aria-selected="false" data-shot="images/hc-list.png" data-alt="List layout in High Contrast">List</button>
         </div>
       </div>
       <div class="split-visual reveal">
-        <div class="frame"><img id="layout-shot" src="images/popover-atelier-meters.png" alt="Meters layout in Atelier Dark" width="420" height="707"></div>
+        <div class="frame"><img id="layout-shot" src="images/hc-meters.png" alt="Meters layout in High Contrast" width="420" height="743"></div>
+      </div>
+    </section>
+
+    <!-- ── History ──────────────────────────────────────────── -->
+    <section id="history" class="section">
+      <header class="section-head reveal">
+        <p class="eyebrow">History</p>
+        <h2>See where your quota goes.</h2>
+        <p>Usage per account over 24 hours, 7 days, or 30 days, with every switch and where it came from. Kept only on your Mac, with accounts stored as anonymous keys. Export to CSV anytime.</p>
+      </header>
+      <div class="dash reveal zoom">
+        <img src="images/hc-dashboard.png" alt="Usage History dashboard: switches, busiest account, readings, and a chart of 5-hour usage per account over 7 days" loading="lazy" width="900" height="747">
       </div>
     </section>
 
@@ -157,16 +273,16 @@
     <section id="themes" class="section">
       <header class="section-head reveal">
         <p class="eyebrow">Themes</p>
-        <h2>23 themes. All of them readable.</h2>
-        <p>From native macOS materials and Apple-widget colors to vivid gradients and high contrast. Every palette passes WCAG contrast checks in the test suite.</p>
+        <h2>23 themes. Or make your own.</h2>
+        <p>Native macOS materials, Apple-widget colors, vivid gradients, and high contrast, every one checked for readable contrast. Build your own from five colors, share it as a file, and shape anything from boxy to round.</p>
       </header>
       <div class="marquee" aria-label="Theme swatches">
         <div class="marquee-track" id="theme-track"></div>
       </div>
       <div class="gallery reveal">
-        <figure><div class="frame"><img src="images/popover-sky.png" alt="Sky gradient theme" loading="lazy" width="420" height="683"></div><figcaption>Sky · Vivid</figcaption></figure>
-        <figure><div class="frame"><img src="images/popover-paper-list.png" alt="Paper light theme" loading="lazy" width="420" height="603"></div><figcaption>Paper · Light</figcaption></figure>
-        <figure><div class="frame"><img src="images/popover-widgets-rings.png" alt="macOS Widgets theme with rings" loading="lazy" width="420" height="675"></div><figcaption>macOS Widgets · Rings</figcaption></figure>
+        <figure><div class="frame"><img src="images/hc-light.png" alt="High Contrast Light theme with ring gauges" loading="lazy" width="420" height="735"></div><figcaption>High Contrast Light · Rings</figcaption></figure>
+        <figure><div class="frame"><img src="images/hc-custom.png" alt="A custom gradient theme made in CSwapBar" loading="lazy" width="420" height="743"></div><figcaption>Your own theme · Gradient</figcaption></figure>
+        <figure><div class="frame"><img src="images/hc-midnight.png" alt="Midnight theme with classic bars" loading="lazy" width="420" height="775"></div><figcaption>Midnight · Classic</figcaption></figure>
       </div>
     </section>
 
@@ -175,11 +291,11 @@
       <div class="split-copy reveal">
         <p class="eyebrow">Privacy Mode</p>
         <h2>Share your screen, not your accounts.</h2>
-        <p>One toggle replaces emails, names, organizations, and plans with generic labels everywhere: cards, widgets, the menu bar, even screen-reader labels.</p>
+        <p>One shortcut, from any app, replaces emails, names, organizations, and plans with generic labels everywhere: cards, widgets, the island, notifications, even screen-reader labels.</p>
         <label class="switch-row">
           <input type="checkbox" id="privacy-toggle">
           <span class="switch" aria-hidden="true"></span>
-          <span>Try it: Privacy Mode <kbd>⇧</kbd><kbd>⌘</kbd><kbd>P</kbd></span>
+          <span>Try it: Privacy Mode <kbd>⌃</kbd><kbd>⌥</kbd><kbd>⌘</kbd><kbd>P</kbd></span>
         </label>
       </div>
       <div class="split-visual reveal">
@@ -193,8 +309,8 @@
             </div>
             <span class="demo-badge">Active</span>
             <div class="demo-meters">
-              <div><label>5-HOUR</label><b>42%</b><i style="--p:42%;--c:#30D158"></i></div>
-              <div><label>7-DAY</label><b>64%</b><i style="--p:64%;--c:#FFD60A"></i></div>
+              <div><label>5-HOUR</label><b>42%</b><i style="--p:42%;--c:#5EE38A"></i></div>
+              <div><label>7-DAY</label><b>64%</b><i style="--p:64%;--c:#FFD24D"></i></div>
             </div>
           </div>
           <div class="demo-card">
@@ -205,8 +321,8 @@
             </div>
             <span class="demo-switch">Switch</span>
             <div class="demo-meters">
-              <div><label>5-HOUR</label><b>88%</b><i style="--p:88%;--c:#FF9F0A"></i></div>
-              <div><label>7-DAY</label><b>97%</b><i style="--p:97%;--c:#FF453A"></i></div>
+              <div><label>5-HOUR</label><b>88%</b><i style="--p:88%;--c:#FFA24D"></i></div>
+              <div><label>7-DAY</label><b>97%</b><i style="--p:97%;--c:#FF6B6B"></i></div>
             </div>
           </div>
         </div>
@@ -220,10 +336,10 @@
         <h2>Your quota, always in view.</h2>
         <p>Three compact widgets that sit on your desktop like macOS widgets. Drag them anywhere. They follow your theme and Privacy Mode.</p>
       </header>
-      <div class="widgets reveal">
-        <img src="images/widget-gauge.png" alt="Gauge widget: 42% 5-hour usage ring" loading="lazy" class="w-small" width="204" height="210">
-        <img src="images/widget-active.png" alt="Active Account widget with 5-hour and 7-day rings" loading="lazy" class="w-wide" width="384" height="204">
-        <img src="images/widget-accounts.png" alt="All Accounts widget listing usage for each account" loading="lazy" class="w-wide" width="384" height="204">
+      <div class="widgets">
+        <img class="reveal" src="images/hc-widget-gauge.png" alt="Gauge widget: 42% 5-hour usage ring" loading="lazy" class="w-small" width="204" height="210">
+        <img class="reveal" src="images/hc-widget-active.png" alt="Active Account widget with 5-hour and 7-day rings" loading="lazy" class="w-wide" width="384" height="204">
+        <img class="reveal" src="images/hc-widget-accounts.png" alt="All Accounts widget listing usage for each account" loading="lazy" class="w-wide" width="384" height="204">
       </div>
     </section>
 
@@ -275,7 +391,7 @@
         <div>
           <p class="eyebrow">Open source · MIT</p>
           <h2>Built in the open.</h2>
-          <p>Swift 6, SwiftUI, 74 tests, and a roadmap with room for you: notifications, usage history, and a dashboard are next.</p>
+          <p>Free and MIT licensed. Issues and pull requests are welcome.</p>
         </div>
         <div class="oss-links">
           <a class="btn btn-primary" href="https://github.com/iamv1n/cswapbar" rel="noopener">Star on GitHub</a>
@@ -298,6 +414,6 @@
     </p>
   </footer>
 
-  <script src="app.js?v=6" defer></script>
+  <script src="app.js?v=19" defer></script>
 </body>
 </html>

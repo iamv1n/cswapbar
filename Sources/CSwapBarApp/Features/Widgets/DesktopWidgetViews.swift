@@ -31,9 +31,9 @@ private struct DesktopWidgetContent: View {
             .frame(width: kind.size.width, alignment: .topLeading)
             .frame(minHeight: kind.size.height, alignment: .topLeading)
             .background(theme.windowTint)
-            .background(theme.windowBackground, in: RoundedRectangle(cornerRadius: 22, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(theme.border.opacity(0.6), lineWidth: 1))
-            .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .background(theme.windowBackground, in: RoundedRectangle(cornerRadius: theme.widgetRadius, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: theme.widgetRadius, style: .continuous).strokeBorder(theme.border.opacity(0.6), lineWidth: theme.cardBorderWidth ?? 1))
+            .clipShape(RoundedRectangle(cornerRadius: theme.widgetRadius, style: .continuous))
         }
     }
 }
@@ -61,11 +61,11 @@ private struct WidgetRing: View {
 
     var body: some View {
         ZStack {
-            Circle().stroke(theme.track, lineWidth: lineWidth)
+            Circle().stroke(theme.track, lineWidth: theme.ringWidth(lineWidth))
             Circle()
                 .trim(from: 0, to: CGFloat((percent ?? 0) / 100))
                 .stroke(theme.color(for: thresholds.level(for: percent)),
-                        style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                        style: StrokeStyle(lineWidth: theme.ringWidth(lineWidth), lineCap: theme.squareEnds ? .butt : .round))
                 .rotationEffect(.degrees(-90))
             HStack(alignment: .firstTextBaseline, spacing: 0) {
                 Text(percent.map { "\(Int($0.rounded()))" } ?? "—")

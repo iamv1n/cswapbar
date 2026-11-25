@@ -52,7 +52,7 @@ struct UsageMeter: View {
                 }
             }
 
-            UsageTrack(percent: percent, color: theme.color(for: level), height: 6)
+            UsageTrack(percent: percent, color: theme.color(for: level), height: theme.barHeight(6))
                 .padding(.top, 2)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -107,7 +107,7 @@ struct ClassicUsageRow: View {
                     .foregroundStyle(percent == nil ? theme.muted : theme.text)
                     .frame(minWidth: 40, alignment: .trailing)
             }
-            UsageTrack(percent: percent, color: theme.color(for: thresholds.level(for: percent)), height: 6)
+            UsageTrack(percent: percent, color: theme.color(for: thresholds.level(for: percent)), height: theme.barHeight(6))
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(label) usage, \(percent.map { "\(Int($0.rounded())) percent" } ?? "unknown")")
@@ -130,10 +130,10 @@ struct RingMeter: View {
         let size: CGFloat = (theme.compact ? 44 : 54) * theme.type.scale
         HStack(spacing: 10) {
             ZStack {
-                Circle().stroke(theme.track, lineWidth: 6)
+                Circle().stroke(theme.track, lineWidth: theme.ringWidth(6))
                 Circle()
                     .trim(from: 0, to: CGFloat((percent ?? 0) / 100))
-                    .stroke(theme.color(for: thresholds.level(for: percent)), style: StrokeStyle(lineWidth: 6, lineCap: .round))
+                    .stroke(theme.color(for: thresholds.level(for: percent)), style: StrokeStyle(lineWidth: theme.ringWidth(6), lineCap: theme.squareEnds ? .butt : .round))
                     .rotationEffect(.degrees(-90))
                 Text(percent.map { "\(Int($0.rounded()))" } ?? "—")
                     .font(theme.type.ringFigure(theme.compact ? 13 : 15))
@@ -176,7 +176,7 @@ struct MiniUsage: View {
                 .font(theme.type.label)
                 .foregroundStyle(theme.muted)
                 .frame(width: 18, alignment: .leading)
-            UsageTrack(percent: percent, color: theme.color(for: thresholds.level(for: percent)), height: 5)
+            UsageTrack(percent: percent, color: theme.color(for: thresholds.level(for: percent)), height: theme.barHeight(5))
                 .frame(width: 46)
             Text(percent.map { "\(Int($0.rounded()))%" } ?? "—")
                 .font(theme.type.font(11.5, .semibold).monospacedDigit())
@@ -199,12 +199,17 @@ struct UsageTrack: View {
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .leading) {
-                Capsule().fill(theme.track)
-                Capsule()
+                trackShape.fill(theme.track)
+                trackShape
                     .fill(color)
                     .frame(width: max(proxy.size.width * CGFloat((percent ?? 0) / 100), (percent ?? 0) > 0 ? height : 0))
             }
         }
         .frame(height: height)
+    }
+
+    /// Capsules normally; square-ended bars with the Boxy corner style.
+    private var trackShape: AnyShape {
+        theme.squareEnds ? AnyShape(RoundedRectangle(cornerRadius: 1, style: .continuous)) : AnyShape(Capsule())
     }
 }

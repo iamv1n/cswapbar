@@ -145,13 +145,17 @@ struct SettingsRow<Control: View>: View {
     let title: String
     var subtitle: String?
     var symbol: String?
+    /// Icon color; the accent by default.
+    var symbolColor: Color?
     @ViewBuilder let control: Control
     @Environment(\.theme) private var theme
 
-    init(_ title: String, subtitle: String? = nil, symbol: String? = nil, @ViewBuilder control: () -> Control) {
+    init(_ title: String, subtitle: String? = nil, symbol: String? = nil, symbolColor: Color? = nil,
+         @ViewBuilder control: () -> Control) {
         self.title = title
         self.subtitle = subtitle
         self.symbol = symbol
+        self.symbolColor = symbolColor
         self.control = control()
     }
 
@@ -160,7 +164,7 @@ struct SettingsRow<Control: View>: View {
             if let symbol {
                 Image(systemName: symbol)
                     .font(theme.type.icon(14))
-                    .foregroundStyle(theme.accent)
+                    .foregroundStyle(symbolColor ?? theme.accent)
                     .frame(width: 22)
             }
             VStack(alignment: .leading, spacing: 2) {

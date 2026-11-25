@@ -18,6 +18,32 @@ public struct AppSettings: Codable, Sendable, Equatable {
     public var widgetsFloatOnTop: Bool = false
     /// Accounts per popover page.
     public var accountsPerPage: Int = AccountPaging.defaultPageSize
+    public var notifications = NotificationPreferences()
+    /// System-wide shortcut that toggles Privacy Mode from any app.
+    public var privacyShortcutEnabled: Bool = true
+    public var privacyShortcut: KeyShortcut = .defaultPrivacyToggle
+    /// System-wide shortcut that opens or closes the popover.
+    public var openShortcutEnabled: Bool = true
+    public var openShortcut: KeyShortcut = .defaultOpenPopover
+    /// Corners, borders, bar thickness and control shape, on top of any theme.
+    public var design = DesignOptions()
+    /// Themes the user made or imported.
+    public var customThemes: [CustomTheme] = []
+    /// When set (and found in `customThemes`), overrides `theme`.
+    public var customThemeID: UUID?
+    public var updates = UpdatePreferences()
+    /// Where the usage colors change (yellow, orange, red).
+    public var usageThresholds: UsageThresholds = .default
+    /// Path to `cswap` chosen in Settings; nil finds it automatically.
+    public var cswapPath: String?
+    /// Keep 30 days of usage history on this Mac (for the dashboard).
+    public var historyEnabled: Bool = true
+    /// Run `cswap auto` from CSwapBar. Off by default.
+    public var autoSwitch = AutoSwitchPreferences()
+    /// Show the "best next account" hint in the popover.
+    public var showRecommendation: Bool = true
+    /// The notch-style usage bar at the top of the screen.
+    public var usageIsland = UsageIslandPreferences()
 
     public static let refreshIntervalOptions = [30, 60, 120, 300]
 
@@ -45,6 +71,69 @@ public struct AppSettings: Codable, Sendable, Equatable {
         widgetsFloatOnTop = (try? c.decodeIfPresent(Bool.self, forKey: .widgetsFloatOnTop)) ?? defaults.widgetsFloatOnTop
         let perPage = (try? c.decodeIfPresent(Int.self, forKey: .accountsPerPage)) ?? defaults.accountsPerPage
         accountsPerPage = min(max(perPage, 2), 8)
+        notifications = (try? c.decodeIfPresent(NotificationPreferences.self, forKey: .notifications)) ?? defaults.notifications
+        privacyShortcutEnabled = (try? c.decodeIfPresent(Bool.self, forKey: .privacyShortcutEnabled)) ?? defaults.privacyShortcutEnabled
+        let shortcut = (try? c.decodeIfPresent(KeyShortcut.self, forKey: .privacyShortcut)) ?? defaults.privacyShortcut
+        privacyShortcut = shortcut.isValidGlobalShortcut ? shortcut : defaults.privacyShortcut
+        openShortcutEnabled = (try? c.decodeIfPresent(Bool.self, forKey: .openShortcutEnabled)) ?? defaults.openShortcutEnabled
+        let open = (try? c.decodeIfPresent(KeyShortcut.self, forKey: .openShortcut)) ?? defaults.openShortcut
+        openShortcut = open.isValidGlobalShortcut ? open : defaults.openShortcut
+        design = (try? c.decodeIfPresent(DesignOptions.self, forKey: .design)) ?? defaults.design
+        // One unreadable theme doesn't drop the others.
+        let lossy = (try? c.decodeIfPresent([Lossy<CustomTheme>].self, forKey: .customThemes)) ?? []
+        customThemes = Array(lossy.compactMap(\.value).prefix(CustomTheme.maxCount))
+        customThemeID = (try? c.decodeIfPresent(UUID.self, forKey: .customThemeID)) ?? nil
+        updates = (try? c.decodeIfPresent(UpdatePreferences.self, forKey: .updates)) ?? defaults.updates
+        usageThresholds = ((try? c.decodeIfPresent(UsageThresholds.self, forKey: .usageThresholds)) ?? defaults.usageThresholds).normalized
+        let path = (try? c.decodeIfPresent(String.self, forKey: .cswapPath)) ?? nil
+        cswapPath = path?.trimmingCharacters(in: .whitespaces).isEmpty == false ? path : nil
+        historyEnabled = (try? c.decodeIfPresent(Bool.self, forKey: .historyEnabled)) ?? defaults.historyEnabled
+        autoSwitch = (try? c.decodeIfPresent(AutoSwitchPreferences.self, forKey: .autoSwitch)) ?? defaults.autoSwitch
+        showRecommendation = (try? c.decodeIfPresent(Bool.self, forKey: .showRecommendation)) ?? defaults.showRecommendation
+        usageIsland = (try? c.decodeIfPresent(UsageIslandPreferences.self, forKey: .usageIsland)) ?? defaults.usageIsland
+    }
+
+    /// The custom theme in use, if any.
+    public var activeCustomTheme: CustomTheme? {
+        guard let customThemeID else { return nil }
+        return customThemes.first { $0.id == customThemeID }
+    }
+
+    /// The palette to paint with: the active custom theme, or the built-in theme.
+    public func activePalette(systemIsDark: Bool) -> ThemePalette {
+        activeCustomTheme?.palette ?? theme.palette(systemIsDark: systemIsDark)
+    }
+
+    /// True when the palette follows macOS light/dark.
+    public var followsSystemAppearance: Bool {
+        activeCustomTheme == nil && theme.adaptiveVariants != nil
+    }
+
+    public mutating func selectBuiltInTheme(_ choice: ThemeChoice) {
+        theme = choice
+        customThemeID = nil
+    }
+
+    /// Adds a custom theme and switches to it. Returns false when the limit is reached.
+    @discardableResult
+    public mutating func addCustomTheme(_ custom: CustomTheme) -> Bool {
+        guard customThemes.count < CustomTheme.maxCount else { return false }
+        customThemes.append(custom)
+        customThemeID = custom.id
+        return true
+    }
+
+    public mutating func deleteCustomTheme(id: UUID) {
+        customThemes.removeAll { $0.id == id }
+        if customThemeID == id { customThemeID = nil }
+    }
+}
+
+/// Decodes an element if it can, or yields `nil` instead of failing the whole array.
+struct Lossy<T: Decodable>: Decodable {
+    let value: T?
+    init(from decoder: any Decoder) throws {
+        value = try? T(from: decoder)
     }
 }
 

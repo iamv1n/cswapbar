@@ -47,8 +47,8 @@ public enum MenuBarText {
     }
 }
 
-/// Notification copy that respects privacy. For the upcoming notifications
-/// feature (see ROADMAP.md); kept here so the wording is unit-tested now.
+/// Notification copy that respects privacy. Masked variants never name an
+/// account, and usage figures and reset times follow their own privacy toggles.
 public enum NotificationText {
     public enum Window: Sendable {
         case fiveHour
@@ -66,16 +66,31 @@ public enum NotificationText {
         account: Account,
         window: Window,
         percent: Double,
-        preferences: PrivacyPreferences
+        resetsAt: Date? = nil,
+        preferences: PrivacyPreferences,
+        now: Date = Date()
     ) -> (title: String, body: String) {
+        let atLimit = percent >= 100
+        let title = atLimit ? "Usage limit reached" : "Usage threshold reached"
         if preferences.shouldMask(.notificationDetails) {
-            return ("Usage threshold reached", "One of your Claude accounts has reached a usage threshold.")
+            return (title, atLimit
+                ? "One of your Claude accounts has hit a usage limit."
+                : "One of your Claude accounts has reached a usage threshold.")
         }
         let name = AccountPresenter.present(account, preferences: preferences).title
-        let body = preferences.shouldMask(.usage)
-            ? "\(name) has reached its \(window.name) usage threshold."
-            : "\(name) has reached \(Int(percent.rounded()))% \(window.name) usage."
-        return ("Usage threshold reached", body)
+        var body: String
+        if atLimit {
+            body = "\(name) has hit its \(window.name) limit."
+            if !preferences.shouldMask(.resetTimestamps),
+               let countdown = CountdownFormatter.string(until: resetsAt, now: now), countdown != "now" {
+                body += " Resets in \(countdown)."
+            }
+        } else {
+            body = preferences.shouldMask(.usage)
+                ? "\(name) has reached its \(window.name) usage threshold."
+                : "\(name) has reached \(Int(percent.rounded()))% \(window.name) usage."
+        }
+        return (title, body)
     }
 
     public static func switched(to account: Account, preferences: PrivacyPreferences) -> (title: String, body: String) {
@@ -84,5 +99,21 @@ public enum NotificationText {
         }
         let name = AccountPresenter.present(account, preferences: preferences).title
         return ("Account switched", "Claude Code is now using \(name).")
+    }
+
+    public static func switchFailed(to account: Account, preferences: PrivacyPreferences) -> (title: String, body: String) {
+        if preferences.shouldMask(.notificationDetails) {
+            return ("Switch failed", "CSwapBar couldn't switch accounts. Open CSwapBar for details.")
+        }
+        let name = AccountPresenter.present(account, preferences: preferences).title
+        return ("Switch failed", "CSwapBar couldn't switch to \(name). Open CSwapBar for details.")
+    }
+
+    public static func needsLogin(account: Account, preferences: PrivacyPreferences) -> (title: String, body: String) {
+        if preferences.shouldMask(.notificationDetails) {
+            return ("Login needed", "One of your Claude accounts needs a new login before CSwap can use it.")
+        }
+        let name = AccountPresenter.present(account, preferences: preferences).title
+        return ("Login needed", "\(name) needs a new login before CSwap can use it.")
     }
 }

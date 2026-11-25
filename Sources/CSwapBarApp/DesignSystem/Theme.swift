@@ -75,6 +75,7 @@ struct Theme {
     let type: Typography
     let compact: Bool
     let layout: CardLayout
+    let design: DesignOptions
 
     private let solidBackground: Color
     private let solidSurface: Color
@@ -82,12 +83,35 @@ struct Theme {
 
     static let popoverWidth: CGFloat = 420
 
-    /// Widgets use the big macOS widget corner radius.
+    /// Widgets use the big macOS widget corner radius. The Corners setting overrides it.
     var cardRadius: CGFloat {
-        switch style {
+        let themeRadius: Double = switch style {
         case .widget: 20
         case .gradient: 18
         default: 14
+        }
+        return CGFloat(design.corners.cardRadius(themeDefault: themeRadius))
+    }
+
+    /// Smaller elements inside cards (badges, icon wells, previews).
+    var innerRadius: CGFloat { max(2, (cardRadius * 0.6).rounded()) }
+
+    /// Desktop widget panels.
+    var widgetRadius: CGFloat { CGFloat(design.corners.widgetRadius(themeDefault: 22)) }
+
+    /// Card outline width, or `nil` to use the theme's own.
+    var cardBorderWidth: CGFloat? { design.borders.lineWidth.map { CGFloat($0) } }
+
+    /// Usage bars and rings scale with the Bars setting.
+    func barHeight(_ base: CGFloat) -> CGFloat { (base * CGFloat(design.bars.scale)).rounded(.toNearestOrAwayFromZero) }
+    func ringWidth(_ base: CGFloat) -> CGFloat { (base * CGFloat(design.bars.scale)).rounded(.toNearestOrAwayFromZero) }
+    var squareEnds: Bool { design.corners.isSquare }
+
+    /// Shape for buttons, chips and badges.
+    var controlShape: AnyShape {
+        switch design.controls {
+        case .pill: AnyShape(Capsule())
+        case .matchCorners: AnyShape(RoundedRectangle(cornerRadius: max(3, innerRadius * 0.8), style: .continuous))
         }
     }
 
@@ -101,9 +125,11 @@ struct Theme {
         font: FontChoice = .system,
         size: TextSizeChoice = .standard,
         compact: Bool = false,
-        layout: CardLayout = .meters
+        layout: CardLayout = .meters,
+        design: DesignOptions = DesignOptions()
     ) {
         self.palette = palette
+        self.design = design
         self.type = Typography(font: font, size: size, roundedFigures: palette.style == .widget)
         self.compact = compact
         self.layout = layout
@@ -149,12 +175,13 @@ struct Theme {
 
     init(settings: AppSettings, systemIsDark: Bool) {
         self.init(
-            palette: settings.theme.palette(systemIsDark: systemIsDark),
+            palette: settings.activePalette(systemIsDark: systemIsDark),
             accent: settings.accent,
             font: settings.font,
             size: settings.textSize,
             compact: settings.compactCards,
-            layout: settings.cardLayout
+            layout: settings.cardLayout,
+            design: settings.design
         )
     }
 
@@ -313,9 +340,18 @@ struct CardBackground: ViewModifier {
         content
             .padding(padding ?? theme.spacing)
             .background(theme.cardFill(highlighted: highlighted, hovered: hovered), in: shape)
-            .overlay(shape.strokeBorder(highlighted ? theme.accent.opacity(0.55) : theme.border, lineWidth: highlighted ? 1.5 : 1))
+            .overlay(shape.strokeBorder(highlighted ? theme.accent.opacity(0.55) : theme.border,
+                                        lineWidth: Self.lineWidth(theme: theme, highlighted: highlighted)))
             .shadow(color: .black.opacity(lightShadow ? (theme.style == .widget ? 0.08 : 0.05) : 0),
                     radius: theme.style == .widget ? 6 : 3, y: theme.style == .widget ? 2 : 1)
+    }
+}
+
+extension CardBackground {
+    /// The Borders setting wins; the active card always keeps a visible outline.
+    static func lineWidth(theme: Theme, highlighted: Bool) -> CGFloat {
+        let base = theme.cardBorderWidth ?? 1
+        return highlighted ? max(base, 1.5) : base
     }
 }
 
@@ -338,7 +374,7 @@ struct AccentButtonStyle: ButtonStyle {
             .foregroundStyle(theme.onAccent)
             .padding(.horizontal, 12)
             .padding(.vertical, 5)
-            .background(theme.accent.opacity(configuration.isPressed ? 0.8 : 1), in: Capsule())
+            .background(theme.accent.opacity(configuration.isPressed ? 0.8 : 1), in: theme.controlShape)
             .opacity(isEnabled ? 1 : 0.45)
     }
 }
@@ -395,6 +431,6 @@ struct Badge: View {
             .foregroundStyle(color)
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
-            .background(color.opacity(0.15), in: Capsule())
+            .background(color.opacity(0.15), in: theme.controlShape)
     }
 }
