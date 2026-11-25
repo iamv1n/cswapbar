@@ -1,0 +1,5 @@
+# CSwapBar website. Everyone, including AI crawlers, is welcome.
+User-agent: *
+Allow: /
+
+Sitemap: https://iamv1n.github.io/cswapbar/sitemap.xml

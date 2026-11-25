@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://iamv1n.github.io/cswapbar/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-meters.png</image:loc>
+      <image:title>CSwapBar popover with four Claude Code accounts, 5-hour and 7-day meters, and a switch suggestion</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-island-expanded.png</image:loc>
+      <image:title>Usage Island expanded under the MacBook notch</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-dashboard.png</image:loc>
+      <image:title>Usage history dashboard with a chart of 5-hour usage per account</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-settings.png</image:loc>
+      <image:title>CSwapBar Settings, Privacy page</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-rings.png</image:loc>
+      <image:title>Rings layout</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-classic.png</image:loc>
+      <image:title>Classic layout</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-list.png</image:loc>
+      <image:title>List layout</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-custom.png</image:loc>
+      <image:title>A custom gradient theme</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/hc-widget-active.png</image:loc>
+      <image:title>Active Account desktop widget</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://iamv1n.github.io/cswapbar/images/og-image.jpg</image:loc>
+      <image:title>CSwapBar for Mac</image:title>
+    </image:image>
+  </url>
+</urlset>

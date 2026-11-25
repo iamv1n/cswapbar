@@ -1,0 +1,142 @@
+# CSwapBar: full reference
+
+> A free, open-source macOS menu bar app for CSwap (claude-swap) that shows usage for every Claude Code account, switches accounts in one click, and warns before you hit the limit. Mac only (macOS 14 Sonoma or later, Apple Silicon). MIT licensed. Version 0.2.0.
+
+Website: https://iamv1n.github.io/cswapbar/
+Source: https://github.com/iamv1n/cswapbar
+Download: https://github.com/iamv1n/cswapbar/releases/latest
+Author: Vineet Likhitkar (https://github.com/iamv1n)
+Built on: CSwap (claude-swap) by Onur Cetinkol, MIT, https://github.com/realiti4/claude-swap
+Status: unofficial community project, not affiliated with or endorsed by Anthropic or the CSwap project.
+
+## What it does
+
+- Live 5-hour and 7-day (weekly) usage for every Claude Code account managed by CSwap
+- One-click account switching, confirmed by CSwap before success is shown
+- Notifications at 80%, 95%, and 100% usage with the reset time
+- Usage Island: a notch or floating bar at the top of the screen instead of the menu bar icon
+- Best-next-account suggestion and optional auto-switch with cswap auto
+- Privacy Mode that hides emails, names, organizations, and plans, with a global shortcut
+- 30 days of local usage history with Swift Charts and CSV export
+- Four layouts, 23 themes, custom themes, and boxy to round shapes
+- Desktop widgets: Gauge, Active Account, and All Accounts
+- Keyboard control and global shortcuts
+- Verified automatic updates from GitHub Releases
+- No backend, no telemetry, no stored credentials
+
+## Where it lives
+
+- Menu bar: a small icon with the active account's usage. Click it (or press Control-Option-Command-C from any app) for the popover.
+- Usage Island: instead of the menu bar icon, a small black bar at the top-center of the screen. Notch style hugs the MacBook camera notch; Floating bar style sits below the menu bar. Hover to expand, click to open the popover. Settings > General > Show CSwapBar in.
+
+## Popover
+
+Every account as a card with 5-hour and 7-day usage, reset countdowns, plan, and organization. Layouts: Meters, Classic, Rings, List. Pages of 4 accounts by default. When the active account passes the yellow threshold, a suggestion shows the account with the most quota left (CSwap's "best" rule), with a Switch button.
+
+## Notifications
+
+Usage crosses 80%, 95%, or 100% (each level can be turned off; includes the reset time); an account was switched outside CSwapBar (for example by cswap auto); a switch failed; an account needs a new login. Text follows privacy settings. Nothing is sent for states that were already true at launch.
+
+## Privacy Mode
+
+Hides emails, names, organizations, and plans everywhere (popover, menu bar, widgets, notifications, screen-reader labels), showing "Account 01" and so on. Toggle: Control-Option-Command-P from any app (recordable), Shift-Command-P in the popover, or the eye icon. Nine individual privacy controls. Privacy Mode hides information on screen; it does not protect files or memory.
+
+## History and dashboard
+
+A reading every 5 minutes per account and every switch, stored in local SQLite for 30 days. Accounts are stored as salted hashes, never emails or names. Dashboard (Command-Y): Swift Charts over 24 hours, 7 days, or 30 days. CSV export with spreadsheet formulas neutralized.
+
+## Switching
+
+Runs `cswap switch <n> --json` without a shell and with timeouts, then confirms with `cswap status --json`. Optional auto-switch (off by default) runs `cswap auto --json` with your threshold and strategy and stops with the app.
+
+## Appearance
+
+23 built-in themes (Adaptive, Vivid, Dark, Light, High Contrast; including macOS and macOS Widgets), all passing WCAG contrast checks. Custom themes from five colors, solid or gradient, with readability warnings and JSON import/export. Shape: Boxy, Soft, Rounded, or Round corners; borders; bar and ring thickness; pill or square buttons. Fonts: SF Pro, SF Pro Rounded, New York, SF Mono.
+
+## Keyboard
+
+| Action | Keys |
+| --- | --- |
+| Open the popover from any app | Control-Option-Command-C |
+| Privacy Mode from any app | Control-Option-Command-P |
+| Highlight account / switch | Up, Down, Return |
+| Switch to account 1-9 | Command-1 to Command-9 |
+| Refresh | Command-R |
+| History dashboard | Command-Y |
+| Settings | Command-, then Command-1 to Command-9 for each page |
+
+## Desktop widgets
+
+Gauge, Active Account, and All Accounts. Built into the app (not WidgetKit), draggable, on the desktop or floating on top.
+
+## Updates
+
+Checks GitHub Releases once a day (can be turned off). Optional automatic installs verify the SHA-256 checksum, bundle ID, version, and code signature before replacing the app and relaunching.
+
+## Privacy and network
+
+No backend, no telemetry, no stored credentials. The only network request is the optional update check to GitHub's public API. CSwap stays the source of truth.
+
+## Requirements
+
+- macOS 14 Sonoma or later (Apple Silicon for release builds)
+- CSwap 1.1.0 or later: `uv tool install claude-swap`, then `cswap add` once per Claude account
+
+## Install
+
+1. Download CSwapBar-<version>.dmg from https://github.com/iamv1n/cswapbar/releases/latest, open it, and drag CSwapBar to Applications.
+2. Allow the first launch (the app is not notarized):
+   - macOS 15 or later: try to open it, click Done, then System Settings > Privacy & Security > Open Anyway.
+   - macOS 14: right-click the app, choose Open, then Open.
+   - Any version: `xattr -dr com.apple.quarantine /Applications/CSwapBar.app`
+3. Or build from source: `curl -fsSL https://raw.githubusercontent.com/iamv1n/cswapbar/main/scripts/get.sh | bash`
+
+## FAQ
+
+### What is CSwapBar?
+
+CSwapBar is a free, open-source Mac app that shows the usage of every Claude Code account you manage with CSwap (claude-swap). It lives in the menu bar or at the notch, shows 5-hour and weekly usage at a glance, and switches accounts in one click.
+
+### Does CSwapBar work on Windows or Linux?
+
+No. CSwapBar is only for Mac. It needs macOS 14 Sonoma or later, and the release builds are for Apple Silicon Macs.
+
+### Do I need CSwap to use CSwapBar?
+
+Yes. CSwapBar is a front end for CSwap 1.1.0 or later. Install it with uv tool install claude-swap, then run cswap add once for each Claude account.
+
+### How does CSwapBar switch Claude Code accounts?
+
+It runs cswap switch for you, then asks CSwap which account is active. It reports success only after CSwap confirms the switch.
+
+### Can CSwapBar warn me before I hit the Claude Code usage limit?
+
+Yes. It can notify you when an account passes 80%, 95%, or 100% of its 5-hour or weekly limit, with the time it resets. Each level can be turned off, and the usage colors are adjustable.
+
+### Does CSwapBar store my Claude credentials or send my data anywhere?
+
+No. CSwapBar stores no credentials, has no backend, and has no telemetry. Its only network request is an optional daily update check to GitHub. Usage history stays on your Mac, with accounts saved as anonymous keys.
+
+### What is the Usage Island?
+
+An optional home for CSwapBar at the top-center of the screen. It hugs the MacBook notch, or floats below the menu bar on screens without one. Hover to see both usage windows and your other accounts; click to open the popover. It replaces the menu bar icon, so only one of the two shows.
+
+### Is CSwapBar free?
+
+Yes. CSwapBar is free and open source under the MIT license. The source code is on GitHub.
+
+### Why does macOS say CSwapBar can't be opened?
+
+CSwapBar isn't notarized by Apple, so macOS asks once. On macOS 15 or later, go to System Settings, then Privacy & Security, and click Open Anyway. On macOS 14, right-click the app and choose Open. Or run xattr -dr com.apple.quarantine /Applications/CSwapBar.app in Terminal.
+
+### How is CSwapBar different from cswap menubar?
+
+CSwap ships its own menu bar app. CSwapBar is an alternative front end with a native SwiftUI interface, Privacy Mode, notifications, the Usage Island, history, themes, and widgets. You only need one; if both run, both poll usage.
+
+### Is CSwapBar made by Anthropic?
+
+No. CSwapBar is an unofficial community project. It isn't affiliated with or endorsed by Anthropic or the CSwap project.
+
+## Trademarks
+
+"Claude" and "Claude Code" are trademarks of Anthropic, used only to describe compatibility.

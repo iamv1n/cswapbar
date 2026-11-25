@@ -1,0 +1,25 @@
+# CSwapBar
+
+> CSwapBar is a free, open-source macOS menu bar app (macOS 14+, Apple Silicon) for CSwap (claude-swap). It shows 5-hour and weekly usage for every Claude Code account, switches accounts in one click, warns before usage limits, and can live at the MacBook notch. Unofficial; not affiliated with Anthropic or CSwap. MIT licensed. Current version: 0.2.0.
+
+CSwapBar is Mac only. It needs CSwap 1.1.0 or later (`uv tool install claude-swap`, then `cswap add` per account). It stores no credentials, has no backend or telemetry, and only contacts GitHub for an optional update check.
+
+## Docs
+
+- [Website](https://iamv1n.github.io/cswapbar/): features, screenshots, install steps, and FAQ
+- [Full reference for AI assistants](https://iamv1n.github.io/cswapbar/llms-full.txt): everything on this site as plain text
+- [README](https://github.com/iamv1n/cswapbar#readme): overview, screenshots, shortcuts, and how it works
+- [Install guide](https://github.com/iamv1n/cswapbar/blob/main/docs/INSTALL.md): first launch on unsigned builds, updating, uninstalling
+- [Changelog](https://github.com/iamv1n/cswapbar/blob/main/CHANGELOG.md): what shipped in each version
+- [Security](https://github.com/iamv1n/cswapbar/blob/main/SECURITY.md): network use, local history, and the threat model
+
+## Download
+
+- [Latest release](https://github.com/iamv1n/cswapbar/releases/latest): DMG and zip with SHA-256 checksums
+
+## Optional
+
+- [Source code](https://github.com/iamv1n/cswapbar): Swift 6, SwiftUI, AppKit, Swift Package Manager
+- [Development](https://github.com/iamv1n/cswapbar/blob/main/DEVELOPMENT.md): architecture, scripts, and testing
+- [Roadmap](https://github.com/iamv1n/cswapbar/blob/main/ROADMAP.md)
+- [CSwap (claude-swap)](https://github.com/realiti4/claude-swap): the CLI that CSwapBar builds on

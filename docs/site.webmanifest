@@ -1,0 +1,22 @@
+{
+  "name": "CSwapBar",
+  "short_name": "CSwapBar",
+  "description": "Every Claude Code account, one glance away. Live usage in your Mac menu bar or at the notch, one-click switching, limit alerts, and Privacy Mode.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#12110f",
+  "theme_color": "#12110f",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

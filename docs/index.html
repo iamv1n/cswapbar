@@ -3,14 +3,362 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CSwapBar for Mac · Every Claude Code account, one click away</title>
-  <meta name="description" content="A native menu-bar app for CSwap, only for Mac (macOS 14+). See 5-hour and 7-day usage for every Claude Code account, switch in one click, and hide it all with Privacy Mode. Free and open source.">
+  <title>CSwapBar: Claude Code Usage &amp; Account Switcher for Mac</title>
+  <meta name="description" content="Free macOS menu bar app for CSwap. See 5-hour and weekly usage for every Claude Code account, switch accounts in one click, and get alerts before you hit the limit.">
+  <link rel="canonical" href="https://iamv1n.github.io/cswapbar/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="Vineet Likhitkar">
+  <meta name="keywords" content="Claude Code, Claude usage, Claude Code usage limit, Claude account switcher, multiple Claude accounts, claude-swap, cswap, Mac menu bar app, MacBook notch">
+  <meta name="application-name" content="CSwapBar">
+  <meta name="apple-mobile-web-app-title" content="CSwapBar">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#12110f">
-  <meta property="og:title" content="CSwapBar">
-  <meta property="og:description" content="Every Claude Code account, one click away in your Mac menu bar. Only for macOS.">
-  <meta property="og:image" content="images/logo.png">
+
+  <!-- Social cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CSwapBar">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://iamv1n.github.io/cswapbar/">
+  <meta property="og:title" content="CSwapBar for Mac: every Claude Code account, one glance away">
+  <meta property="og:description" content="Every Claude Code account, one glance away. Live usage in your Mac menu bar or at the notch, one-click switching, limit alerts, and Privacy Mode.">
+  <meta property="og:image" content="https://iamv1n.github.io/cswapbar/images/og-image.jpg">
+  <meta property="og:image:secure_url" content="https://iamv1n.github.io/cswapbar/images/og-image.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CSwapBar for Mac: a popover with four Claude Code accounts and their 5-hour and 7-day usage">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CSwapBar for Mac: every Claude Code account, one glance away">
+  <meta name="twitter:description" content="Every Claude Code account, one glance away. Live usage in your Mac menu bar or at the notch, one-click switching, limit alerts, and Privacy Mode.">
+  <meta name="twitter:image" content="https://iamv1n.github.io/cswapbar/images/og-image.jpg">
+  <meta name="twitter:image:alt" content="CSwapBar popover with four Claude Code accounts and their usage">
+
+  <!-- Icons, manifest, and machine-readable summaries -->
   <link rel="icon" href="brand/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
+  <link rel="alternate" type="text/plain" href="llms.txt" title="CSwapBar summary for AI assistants">
+  <link rel="alternate" type="text/plain" href="llms-full.txt" title="CSwapBar full reference for AI assistants">
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://iamv1n.github.io/cswapbar/#website",
+      "url": "https://iamv1n.github.io/cswapbar/",
+      "name": "CSwapBar",
+      "alternateName": [
+        "CSwapBar for Mac",
+        "CSwap Bar"
+      ],
+      "description": "Free macOS menu bar app for CSwap. See 5-hour and weekly usage for every Claude Code account, switch accounts in one click, and get alerts before you hit the limit.",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://iamv1n.github.io/cswapbar/#author"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://iamv1n.github.io/cswapbar/#webpage",
+      "url": "https://iamv1n.github.io/cswapbar/",
+      "name": "CSwapBar: Claude Code Usage & Account Switcher for Mac",
+      "description": "Free macOS menu bar app for CSwap. See 5-hour and weekly usage for every Claude Code account, switch accounts in one click, and get alerts before you hit the limit.",
+      "isPartOf": {
+        "@id": "https://iamv1n.github.io/cswapbar/#website"
+      },
+      "about": {
+        "@id": "https://iamv1n.github.io/cswapbar/#app"
+      },
+      "mainEntity": {
+        "@id": "https://iamv1n.github.io/cswapbar/#app"
+      },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://iamv1n.github.io/cswapbar/images/og-image.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-11-23",
+      "dateModified": "2026-11-25",
+      "inLanguage": "en",
+      "author": {
+        "@id": "https://iamv1n.github.io/cswapbar/#author"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://iamv1n.github.io/cswapbar/#author",
+      "name": "Vineet Likhitkar",
+      "url": "https://github.com/iamv1n",
+      "sameAs": [
+        "https://github.com/iamv1n"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://iamv1n.github.io/cswapbar/#app",
+      "name": "CSwapBar",
+      "alternateName": "CSwapBar for Mac",
+      "description": "A native macOS menu bar companion for CSwap (claude-swap) that shows 5-hour and weekly usage for every Claude Code account, switches accounts in one click, and warns you before you hit the limit.",
+      "url": "https://iamv1n.github.io/cswapbar/",
+      "applicationCategory": "DeveloperApplication",
+      "applicationSubCategory": "Menu bar utility",
+      "operatingSystem": "macOS 14 Sonoma or later",
+      "processorRequirements": "Apple Silicon (arm64)",
+      "softwareRequirements": "CSwap (claude-swap) 1.1.0 or later",
+      "softwareVersion": "0.2.0",
+      "datePublished": "2026-11-23",
+      "dateModified": "2026-11-25",
+      "downloadUrl": "https://github.com/iamv1n/cswapbar/releases/latest",
+      "installUrl": "https://github.com/iamv1n/cswapbar/releases/latest",
+      "softwareHelp": {
+        "@type": "CreativeWork",
+        "url": "https://github.com/iamv1n/cswapbar/blob/main/docs/INSTALL.md"
+      },
+      "releaseNotes": "https://github.com/iamv1n/cswapbar/blob/main/CHANGELOG.md",
+      "license": "https://github.com/iamv1n/cswapbar/blob/main/LICENSE",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "https://github.com/iamv1n/cswapbar/releases/latest"
+      },
+      "image": "https://iamv1n.github.io/cswapbar/images/og-image.jpg",
+      "screenshot": [
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-meters.png",
+          "caption": "CSwapBar popover with four Claude Code accounts, 5-hour and 7-day meters, and a switch suggestion"
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-island-expanded.png",
+          "caption": "Usage Island expanded under the MacBook notch"
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-dashboard.png",
+          "caption": "Usage history dashboard with a chart of 5-hour usage per account"
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-settings.png",
+          "caption": "CSwapBar Settings, Privacy page"
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-rings.png",
+          "caption": "Rings layout"
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-classic.png",
+          "caption": "Classic layout"
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-list.png",
+          "caption": "List layout"
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-custom.png",
+          "caption": "A custom gradient theme"
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://iamv1n.github.io/cswapbar/images/hc-widget-active.png",
+          "caption": "Active Account desktop widget"
+        }
+      ],
+      "featureList": [
+        "Live 5-hour and 7-day (weekly) usage for every Claude Code account managed by CSwap",
+        "One-click account switching, confirmed by CSwap before success is shown",
+        "Notifications at 80%, 95%, and 100% usage with the reset time",
+        "Usage Island: a notch or floating bar at the top of the screen instead of the menu bar icon",
+        "Best-next-account suggestion and optional auto-switch with cswap auto",
+        "Privacy Mode that hides emails, names, organizations, and plans, with a global shortcut",
+        "30 days of local usage history with Swift Charts and CSV export",
+        "Four layouts, 23 themes, custom themes, and boxy to round shapes",
+        "Desktop widgets: Gauge, Active Account, and All Accounts",
+        "Keyboard control and global shortcuts",
+        "Verified automatic updates from GitHub Releases",
+        "No backend, no telemetry, no stored credentials"
+      ],
+      "keywords": "Claude Code, Claude usage, Claude Code usage limit, Claude account switcher, multiple Claude accounts, claude-swap, cswap, macOS menu bar app, MacBook notch, usage monitor",
+      "author": {
+        "@id": "https://iamv1n.github.io/cswapbar/#author"
+      },
+      "publisher": {
+        "@id": "https://iamv1n.github.io/cswapbar/#author"
+      },
+      "isBasedOn": {
+        "@type": "SoftwareApplication",
+        "name": "CSwap (claude-swap)",
+        "url": "https://github.com/realiti4/claude-swap"
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "https://iamv1n.github.io/cswapbar/#source",
+      "name": "CSwapBar source code",
+      "codeRepository": "https://github.com/iamv1n/cswapbar",
+      "programmingLanguage": [
+        "Swift",
+        "SwiftUI"
+      ],
+      "runtimePlatform": "macOS",
+      "license": "https://github.com/iamv1n/cswapbar/blob/main/LICENSE",
+      "author": {
+        "@id": "https://iamv1n.github.io/cswapbar/#author"
+      },
+      "targetProduct": {
+        "@id": "https://iamv1n.github.io/cswapbar/#app"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "@id": "https://iamv1n.github.io/cswapbar/#install",
+      "name": "How to install CSwapBar on a Mac",
+      "totalTime": "PT2M",
+      "tool": [
+        {
+          "@type": "HowToTool",
+          "name": "CSwap (claude-swap) 1.1.0 or later"
+        }
+      ],
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Install CSwap",
+          "text": "Run: uv tool install claude-swap && cswap add (once per Claude account).",
+          "url": "https://iamv1n.github.io/cswapbar/#install"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Download CSwapBar",
+          "text": "Download the DMG from GitHub Releases, open it, and drag CSwapBar to Applications.",
+          "url": "https://iamv1n.github.io/cswapbar/#install"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Allow the first launch",
+          "text": "macOS 15 or later: System Settings, Privacy & Security, Open Anyway. macOS 14: right-click the app and choose Open.",
+          "url": "https://iamv1n.github.io/cswapbar/#install"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://iamv1n.github.io/cswapbar/#faq",
+      "isPartOf": {
+        "@id": "https://iamv1n.github.io/cswapbar/#webpage"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is CSwapBar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CSwapBar is a free, open-source Mac app that shows the usage of every Claude Code account you manage with CSwap (claude-swap). It lives in the menu bar or at the notch, shows 5-hour and weekly usage at a glance, and switches accounts in one click."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does CSwapBar work on Windows or Linux?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. CSwapBar is only for Mac. It needs macOS 14 Sonoma or later, and the release builds are for Apple Silicon Macs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need CSwap to use CSwapBar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. CSwapBar is a front end for CSwap 1.1.0 or later. Install it with uv tool install claude-swap, then run cswap add once for each Claude account."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does CSwapBar switch Claude Code accounts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It runs cswap switch for you, then asks CSwap which account is active. It reports success only after CSwap confirms the switch."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can CSwapBar warn me before I hit the Claude Code usage limit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. It can notify you when an account passes 80%, 95%, or 100% of its 5-hour or weekly limit, with the time it resets. Each level can be turned off, and the usage colors are adjustable."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does CSwapBar store my Claude credentials or send my data anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. CSwapBar stores no credentials, has no backend, and has no telemetry. Its only network request is an optional daily update check to GitHub. Usage history stays on your Mac, with accounts saved as anonymous keys."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Usage Island?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An optional home for CSwapBar at the top-center of the screen. It hugs the MacBook notch, or floats below the menu bar on screens without one. Hover to see both usage windows and your other accounts; click to open the popover. It replaces the menu bar icon, so only one of the two shows."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is CSwapBar free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. CSwapBar is free and open source under the MIT license. The source code is on GitHub."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does macOS say CSwapBar can't be opened?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CSwapBar isn't notarized by Apple, so macOS asks once. On macOS 15 or later, go to System Settings, then Privacy & Security, and click Open Anyway. On macOS 14, right-click the app and choose Open. Or run xattr -dr com.apple.quarantine /Applications/CSwapBar.app in Terminal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is CSwapBar different from cswap menubar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CSwap ships its own menu bar app. CSwapBar is an alternative front end with a native SwiftUI interface, Privacy Mode, notifications, the Usage Island, history, themes, and widgets. You only need one; if both run, both poll usage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is CSwapBar made by Anthropic?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. CSwapBar is an unofficial community project. It isn't affiliated with or endorsed by Anthropic or the CSwap project."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="styles.css?v=22">
 </head>
 <body>
   <div class="progress" aria-hidden="true"></div>
@@ -40,7 +388,7 @@
       <div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       <div class="hero-copy">
         <p class="mac-pill"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9H4V5zm2 0v7h12V5H6zM1 16h22v1a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3v-1z"/></svg>CSwapBar for Mac · macOS 14 or later</p>
-        <h1 class="split-words">Your Claude quota.<br><span class="accent-text">Always one glance away.</span></h1>
+        <h1 class="split-words">Your Claude Code quota.<br><span class="accent-text">Always one glance away.</span></h1>
         <p class="lead">Every Claude Code account, live in your menu bar or right at the notch. Switch in one click. Get warned before the limit. Vanish it all when you share your screen.</p>
         <div class="cta">
           <a class="btn btn-primary btn-lg" href="https://github.com/iamv1n/cswapbar/releases/latest" rel="noopener">
@@ -265,7 +613,7 @@
         <p>Usage per account over 24 hours, 7 days, or 30 days, with every switch and where it came from. Kept only on your Mac, with accounts stored as anonymous keys. Export to CSV anytime.</p>
       </header>
       <div class="dash reveal zoom">
-        <img src="images/hc-dashboard.png" alt="Usage History dashboard: switches, busiest account, readings, and a chart of 5-hour usage per account over 7 days" loading="lazy" width="900" height="747">
+        <img src="images/hc-dashboard.png" alt="Usage History dashboard: switches, busiest account, readings, and a chart of 5-hour usage per account over 7 days" loading="lazy" decoding="async" width="900" height="747">
       </div>
     </section>
 
@@ -280,9 +628,9 @@
         <div class="marquee-track" id="theme-track"></div>
       </div>
       <div class="gallery reveal">
-        <figure><div class="frame"><img src="images/hc-light.png" alt="High Contrast Light theme with ring gauges" loading="lazy" width="420" height="735"></div><figcaption>High Contrast Light · Rings</figcaption></figure>
-        <figure><div class="frame"><img src="images/hc-custom.png" alt="A custom gradient theme made in CSwapBar" loading="lazy" width="420" height="743"></div><figcaption>Your own theme · Gradient</figcaption></figure>
-        <figure><div class="frame"><img src="images/hc-midnight.png" alt="Midnight theme with classic bars" loading="lazy" width="420" height="775"></div><figcaption>Midnight · Classic</figcaption></figure>
+        <figure><div class="frame"><img src="images/hc-light.png" alt="High Contrast Light theme with ring gauges" loading="lazy" decoding="async" width="420" height="735"></div><figcaption>High Contrast Light · Rings</figcaption></figure>
+        <figure><div class="frame"><img src="images/hc-custom.png" alt="A custom gradient theme made in CSwapBar" loading="lazy" decoding="async" width="420" height="743"></div><figcaption>Your own theme · Gradient</figcaption></figure>
+        <figure><div class="frame"><img src="images/hc-midnight.png" alt="Midnight theme with classic bars" loading="lazy" decoding="async" width="420" height="775"></div><figcaption>Midnight · Classic</figcaption></figure>
       </div>
     </section>
 
@@ -337,9 +685,9 @@
         <p>Three compact widgets that sit on your desktop like macOS widgets. Drag them anywhere. They follow your theme and Privacy Mode.</p>
       </header>
       <div class="widgets">
-        <img class="reveal" src="images/hc-widget-gauge.png" alt="Gauge widget: 42% 5-hour usage ring" loading="lazy" class="w-small" width="204" height="210">
-        <img class="reveal" src="images/hc-widget-active.png" alt="Active Account widget with 5-hour and 7-day rings" loading="lazy" class="w-wide" width="384" height="204">
-        <img class="reveal" src="images/hc-widget-accounts.png" alt="All Accounts widget listing usage for each account" loading="lazy" class="w-wide" width="384" height="204">
+        <img class="reveal" src="images/hc-widget-gauge.png" alt="Gauge widget: 42% 5-hour usage ring" loading="lazy" decoding="async" class="w-small" width="204" height="210">
+        <img class="reveal" src="images/hc-widget-active.png" alt="Active Account widget with 5-hour and 7-day rings" loading="lazy" decoding="async" class="w-wide" width="384" height="204">
+        <img class="reveal" src="images/hc-widget-accounts.png" alt="All Accounts widget listing usage for each account" loading="lazy" decoding="async" class="w-wide" width="384" height="204">
       </div>
     </section>
 
@@ -385,6 +733,60 @@
       </div>
     </section>
 
+    <!-- ── FAQ ─────────────────────────────────────────────── -->
+    <section id="faq" class="section" aria-labelledby="faq-title">
+      <header class="section-head reveal">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="faq-title">Questions, answered.</h2>
+      </header>
+      <div class="faq-list">
+        <details class="faq-item reveal" id="faq-1">
+          <summary><h3>What is CSwapBar?</h3></summary>
+          <div class="answer"><p>CSwapBar is a free, open-source Mac app that shows the usage of every Claude Code account you manage with <a href="https://github.com/realiti4/claude-swap" rel="noopener">CSwap</a> (claude-swap). It lives in the menu bar or at the notch, shows 5-hour and weekly usage at a glance, and switches accounts in one click.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-2">
+          <summary><h3>Does CSwapBar work on Windows or Linux?</h3></summary>
+          <div class="answer"><p>No. CSwapBar is only for Mac. It needs macOS 14 Sonoma or later, and the release builds are for Apple Silicon Macs.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-3">
+          <summary><h3>Do I need CSwap to use CSwapBar?</h3></summary>
+          <div class="answer"><p>Yes. CSwapBar is a front end for CSwap 1.1.0 or later. Install it with <code>uv tool install claude-swap</code>, then run <code>cswap add</code> once for each Claude account.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-4">
+          <summary><h3>How does CSwapBar switch Claude Code accounts?</h3></summary>
+          <div class="answer"><p>It runs <code>cswap switch</code> for you, then asks CSwap which account is active. It reports success only after CSwap confirms the switch.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-5">
+          <summary><h3>Can CSwapBar warn me before I hit the Claude Code usage limit?</h3></summary>
+          <div class="answer"><p>Yes. It can notify you when an account passes 80%, 95%, or 100% of its 5-hour or weekly limit, with the time it resets. Each level can be turned off, and the usage colors are adjustable.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-6">
+          <summary><h3>Does CSwapBar store my Claude credentials or send my data anywhere?</h3></summary>
+          <div class="answer"><p>No. CSwapBar stores no credentials, has no backend, and has no telemetry. Its only network request is an optional daily update check to GitHub. Usage history stays on your Mac, with accounts saved as anonymous keys.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-7">
+          <summary><h3>What is the Usage Island?</h3></summary>
+          <div class="answer"><p>An optional home for CSwapBar at the top-center of the screen. It hugs the MacBook notch, or floats below the menu bar on screens without one. Hover to see both usage windows and your other accounts; click to open the popover. It replaces the menu bar icon, so only one of the two shows.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-8">
+          <summary><h3>Is CSwapBar free?</h3></summary>
+          <div class="answer"><p>Yes. CSwapBar is free and open source under the MIT license. The source code is on <a href="https://github.com/iamv1n/cswapbar" rel="noopener">GitHub</a>.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-9">
+          <summary><h3>Why does macOS say CSwapBar can&#x27;t be opened?</h3></summary>
+          <div class="answer"><p>CSwapBar isn't notarized by Apple, so macOS asks once. On macOS 15 or later, go to System Settings, then Privacy &amp; Security, and click Open Anyway. On macOS 14, right-click the app and choose Open. Or run <code>xattr -dr com.apple.quarantine /Applications/CSwapBar.app</code> in Terminal.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-10">
+          <summary><h3>How is CSwapBar different from cswap menubar?</h3></summary>
+          <div class="answer"><p>CSwap ships its own menu bar app. CSwapBar is an alternative front end with a native SwiftUI interface, Privacy Mode, notifications, the Usage Island, history, themes, and widgets. You only need one; if both run, both poll usage.</p></div>
+        </details>
+        <details class="faq-item reveal" id="faq-11">
+          <summary><h3>Is CSwapBar made by Anthropic?</h3></summary>
+          <div class="answer"><p>No. CSwapBar is an unofficial community project. It isn't affiliated with or endorsed by Anthropic or the CSwap project.</p></div>
+        </details>
+      </div>
+    </section>
+
     <!-- ── Open source ──────────────────────────────────────── -->
     <section class="section oss reveal">
       <div class="oss-card">
@@ -403,6 +805,16 @@
   </main>
 
   <footer class="footer">
+    <nav class="footer-links" aria-label="Footer">
+      <a href="https://github.com/iamv1n/cswapbar/releases/latest" rel="noopener">Download</a>
+      <a href="#install">Install</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/iamv1n/cswapbar/blob/main/docs/INSTALL.md" rel="noopener">Install guide</a>
+      <a href="https://github.com/iamv1n/cswapbar/blob/main/CHANGELOG.md" rel="noopener">Changelog</a>
+      <a href="https://github.com/iamv1n/cswapbar/blob/main/ROADMAP.md" rel="noopener">Roadmap</a>
+      <a href="https://github.com/iamv1n/cswapbar/blob/main/SECURITY.md" rel="noopener">Security</a>
+      <a href="https://github.com/iamv1n/cswapbar" rel="noopener">GitHub</a>
+    </nav>
     <div class="author">
       <span>Made by <b>Vineet Likhitkar</b></span>
       <a href="https://github.com/iamv1n" rel="noopener">@iamv1n</a>
@@ -414,6 +826,6 @@
     </p>
   </footer>
 
-  <script src="app.js?v=19" defer></script>
+  <script src="app.js?v=20" defer></script>
 </body>
 </html>

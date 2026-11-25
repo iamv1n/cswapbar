@@ -44,7 +44,13 @@ text = re.sub(r"^\[Unreleased\]: (.*)/compare/v[^.\s]+\.[^.\s]+\.[^.\s]+\.\.\.HE
 open(path, "w").write(text)
 PY
 
-git add VERSION CHANGELOG.md
+# Keep the website's structured data and AI summaries on the new version.
+sed -i '' -E "s/\"softwareVersion\": \"[^\"]+\"/\"softwareVersion\": \"$NEW\"/; s/\"dateModified\": \"[0-9-]+\"/\"dateModified\": \"$TODAY\"/g" docs/index.html
+sed -i '' -E "s/Current version: [0-9A-Za-z.-]+\./Current version: $NEW./" docs/llms.txt
+sed -i '' -E "s/MIT licensed\. Version [0-9A-Za-z.-]+\./MIT licensed. Version $NEW./" docs/llms-full.txt
+sed -i '' -E "s#<lastmod>[0-9-]+</lastmod>#<lastmod>$TODAY</lastmod>#" docs/sitemap.xml
+
+git add VERSION CHANGELOG.md docs/index.html docs/llms.txt docs/llms-full.txt docs/sitemap.xml
 git commit -m "Release $TAG"
 git tag -a "$TAG" -m "CSwapBar $NEW"
 
