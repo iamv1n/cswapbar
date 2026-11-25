@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-25
+
 ### Added
 
 - **Notifications** for usage crossing 80%, 95%, or 100% (each level can be turned off; limit alerts include the reset time), for account switches made outside CSwapBar (such as CSwap's auto-switch), for failed switches, and for accounts that need a new login. Nothing is sent for what's already true at launch, and every message follows the privacy settings. Turning on Privacy Mode clears delivered notifications. Settings → Notifications has a test button and links to System Settings when notifications are blocked.
@@ -45,5 +47,6 @@ First public release.
 - **Developer tooling:** `scripts/setup.sh`, `build.sh`, `test.sh`, `install.sh`, `package.sh` (DMG and zip), `release.sh`, `make-icon.sh`, and `get.sh`. Also UI snapshot flags (`--render-popover`, `--render-settings`, `--render-widget`).
 - **Tests:** 74 tests, including WCAG contrast checks for every theme and accent, plus opt-in read-only integration tests against a real CSwap install.
 
-[Unreleased]: https://github.com/iamv1n/cswapbar/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/iamv1n/cswapbar/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/iamv1n/cswapbar/releases/tag/v0.2.0
 [0.1.0]: https://github.com/iamv1n/cswapbar/releases/tag/v0.1.0
