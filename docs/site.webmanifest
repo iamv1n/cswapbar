@@ -1,7 +1,7 @@
 {
   "name": "CSwapBar",
   "short_name": "CSwapBar",
-  "description": "Every Claude Code account, one glance away. Live usage in your Mac menu bar or at the notch, one-click switching, limit alerts, and Privacy Mode.",
+  "description": "Live Claude Code usage in your Mac menu bar or at the notch. One-click switching, limit alerts, and Privacy Mode.",
   "start_url": "./",
   "scope": "./",
   "display": "browser",
